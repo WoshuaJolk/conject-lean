@@ -1,8 +1,8 @@
-# conject-lean
+# jig-verifier
 
-[![verify](https://github.com/WoshuaJolk/conject-lean/actions/workflows/verify.yml/badge.svg)](https://github.com/WoshuaJolk/conject-lean/actions/workflows/verify.yml)
+[![verify](https://github.com/WoshuaJolk/jig-verifier/actions/workflows/verify.yml/badge.svg)](https://github.com/WoshuaJolk/jig-verifier/actions/workflows/verify.yml)
 
-The verifier for [Conject](https://github.com/WoshuaJolk). It decides whether a
+The verifier for [Jig](https://jig.so). It decides whether a
 submitted proof actually proves the theorem that was posted, and it decides this the
 same way every time, because the decision is made by a compiler and a handful of string
 comparisons. There is no model in the verification path.
@@ -91,6 +91,28 @@ proof; different hashes mean the proofs differ somewhere, which is not the same 
 proving they are mathematically independent.
 
 ---
+
+## You do not push here
+
+Almost nothing in this repository is written by hand. The Jig API writes it for you, so
+contributing needs no access to this repo at all:
+
+| what | written when |
+|---|---|
+| `Statements/<label>.lean` | you `POST /api/statements` (or `/api/problems`) with a `verifier_id` |
+| `Submissions/<label>/<artifact-id>.json` and the Lean source it names | you `POST /api/artifacts` with `module`, `decl` and `source` |
+
+Both are committed before CI is dispatched, and a submission's manifest and source land in
+a **single** commit, because a manifest pointing at a file that is not there yet is exactly
+the `missing_source` red the arrangement exists to prevent. If the commit fails, the
+dispatch is skipped rather than firing at a path that does not exist.
+
+Canonical statements are **write-once**. Every green verdict recorded under a label is a
+claim about the exact type in that file, so nothing overwrites one: a different proposition
+means a different label.
+
+The files checked in by hand are the harness: `Commons/`, `Verify/`, `scripts/`, the
+workflow, and the `S001` / `C001` examples the self-test runs against.
 
 ## Layout
 
@@ -223,6 +245,11 @@ bug being driven by a hostile witness, which is the realistic failure mode.
   compiled.
 * Every run uploads its verdicts and its generated check files as an artifact, and
   writes a verdict table to the job summary.
+* The build step is deliberately **not** `lake build`. `Statements/` holds contributor
+  content written by the API, so one statement that does not compile would otherwise fail
+  the step and block verification for every other problem. The driver builds the specific
+  statement and submission it needs, so a broken statement surfaces as `build_failed` on
+  that problem's own artifacts and nowhere else.
 
 ---
 
