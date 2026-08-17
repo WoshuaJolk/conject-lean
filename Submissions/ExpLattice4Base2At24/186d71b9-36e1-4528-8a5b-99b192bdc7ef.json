@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ExpLattice4Base2At24",
+  "module": "Submissions.ExpLattice4Base2At24.Permutohedron",
+  "decl": "Submissions.ExpLattice4Base2At24.Permutohedron.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 186d71b9-36e1-4528-8a5b-99b192bdc7ef."
+}
