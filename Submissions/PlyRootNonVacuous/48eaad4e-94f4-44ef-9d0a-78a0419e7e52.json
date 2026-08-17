@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyRootNonVacuous",
+  "module": "Submissions.PlyRootNonVacuous.Poser",
+  "decl": "Submissions.PlyRootNonVacuous.Poser.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 48eaad4e-94f4-44ef-9d0a-78a0419e7e52."
+}
