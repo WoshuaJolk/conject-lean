@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "OVParityInterchange",
+  "module": "Submissions.OVParityInterchange.WoshuaJolk",
+  "decl": "Submissions.OVParityInterchange.WoshuaJolk.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 2afd387e-ceb1-4a3d-bf05-8996a8c082aa."
+}
