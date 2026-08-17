@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PaleyLocSmallCases",
+  "module": "Submissions.PaleyLocSmallCases.KernelCheck",
+  "decl": "Submissions.PaleyLocSmallCases.KernelCheck.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 78c1d81f-60c6-4b7b-b5b3-06b5d50e9f19."
+}
