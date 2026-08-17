@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyGridOptimal",
+  "module": "Submissions.PlyGridOptimal.DegenerateVacuous",
+  "decl": "Submissions.PlyGridOptimal.DegenerateVacuous.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 258f5615-efa9-4e6c-98ac-6e2f857f2b27."
+}
