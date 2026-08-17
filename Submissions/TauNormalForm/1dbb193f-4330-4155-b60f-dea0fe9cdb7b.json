@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TauNormalForm",
+  "module": "Submissions.TauNormalForm.NormalForm",
+  "decl": "Submissions.TauNormalForm.NormalForm.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 1dbb193f-4330-4155-b60f-dea0fe9cdb7b."
+}
