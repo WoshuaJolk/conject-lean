@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UndirectedProductBarrier",
+  "module": "Submissions.UndirectedProductBarrier.ProductBarrier",
+  "decl": "Submissions.UndirectedProductBarrier.ProductBarrier.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 60b20fab-8964-4c19-b51c-11964bcfecaa."
+}
