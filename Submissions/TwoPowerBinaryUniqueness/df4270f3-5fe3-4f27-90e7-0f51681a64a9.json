@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwoPowerBinaryUniqueness",
+  "module": "Submissions.TwoPowerBinaryUniqueness.BitIndices",
+  "decl": "Submissions.TwoPowerBinaryUniqueness.BitIndices.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact df4270f3-5fe3-4f27-90e7-0f51681a64a9."
+}
