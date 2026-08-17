@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "LemmaCAbelianCosetCover",
+  "module": "Submissions.LemmaCAbelianCosetCover.RecoveredLemmaC",
+  "decl": "Submissions.LemmaCAbelianCosetCover.RecoveredLemmaC.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact ed522efb-032b-4c3d-97e0-2282f6ac8889."
+}
