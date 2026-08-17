@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "DisjointCosetBudget",
+  "module": "Submissions.DisjointCosetBudget.CosetIndexCount",
+  "decl": "Submissions.DisjointCosetBudget.CosetIndexCount.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 78b289e1-a93c-438b-a8cb-471786a7ea32."
+}
