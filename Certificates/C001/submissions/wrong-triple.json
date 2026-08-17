@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "certificate",
+  "statement_id": "C001",
+  "witness": "wrong-triple.witness",
+  "author": "mallory",
+  "expect": "red",
+  "expect_reason": "invalid_witness",
+  "note": "1^3 + 2^3 + 3^3 = 36, not 42."
+}

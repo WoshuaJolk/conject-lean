@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "S001",
+  "module": "Submissions.S001.MalloryWeakened",
+  "decl": "Submissions.S001.MalloryWeakened.proof",
+  "author": "mallory",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Adversarial: proves the theorem with an extra hypothesis (Even n)."
+}

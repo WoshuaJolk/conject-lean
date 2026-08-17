@@ -1,0 +1,13 @@
+{
+  "schema": "conject.certificate.v1",
+  "id": "C001",
+  "title": "42 as a sum of three integer cubes",
+  "statement": "Exhibit integers a, b, c with a^3 + b^3 + c^3 = 42.",
+  "witness_format": "three whitespace-separated decimal integers",
+  "limits": {
+    "wall_sec": 20,
+    "cpu_sec": 10,
+    "address_space_mb": 512,
+    "output_bytes": 65536
+  }
+}

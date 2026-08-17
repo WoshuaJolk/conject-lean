@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "S001",
+  "module": "Submissions.S001.TrentSorry",
+  "decl": "Submissions.S001.TrentSorry.proof",
+  "author": "trent",
+  "expect": "red",
+  "expect_reason": "forbidden_syntax",
+  "note": "Adversarial: right type, no proof."
+}

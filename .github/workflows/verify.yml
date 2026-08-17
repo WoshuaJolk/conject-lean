@@ -1,0 +1,151 @@
+name: verify
+
+on:
+  workflow_dispatch:
+    inputs:
+      statement_id:
+        description: "Statement id, e.g. S001 or C001"
+        required: true
+        type: string
+      submission:
+        description: "Path to the submission manifest, e.g. Submissions/S001/AliceDirect.json"
+        required: true
+        type: string
+      ref:
+        description: "Git ref holding the submission (defaults to this workflow's ref)"
+        required: false
+        type: string
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: verify-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Kept below the 20-minute job timeout so the driver writes a RED verdict itself
+  # rather than being killed mid-flight.
+  CONJECT_TIMEOUT: "900"
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      - name: Install elan
+        run: |
+          set -euo pipefail
+          curl -sSfL https://elan.lean-lang.org/elan-init.sh -o elan-init.sh
+          bash elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Cache Mathlib
+        uses: actions/cache@v4
+        with:
+          # The unpacked dependency oleans. On a hit `lake exe cache get` becomes a
+          # no-op instead of a multi-gigabyte download.
+          path: .lake/packages
+          key: mathlib-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Cache Conject build output
+        uses: actions/cache@v4
+        with:
+          path: .lake/build
+          key: conject-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ hashFiles('Commons/**', 'Statements/**', 'Submissions/**', 'Verify/**') }}
+          restore-keys: |
+            conject-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
+      - name: Fetch Mathlib oleans
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          lake exe cache get
+
+      - name: Build
+        timeout-minutes: 15
+        run: lake build
+
+      # A red verdict fails this step on purpose: "not verified" should read as a failed
+      # check. The verdict JSON is still produced and uploaded by the always() steps.
+      - name: Verify submission (workflow_dispatch)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          STATEMENT_ID: ${{ inputs.statement_id }}
+          SUBMISSION: ${{ inputs.submission }}
+        run: |
+          set -uo pipefail
+          ./scripts/verify.sh \
+            --statement "$STATEMENT_ID" \
+            --submission "$SUBMISSION" \
+            --out verdict.json \
+            --timeout "$CONJECT_TIMEOUT"
+
+      - name: Self-test (all example submissions)
+        if: github.event_name != 'workflow_dispatch'
+        run: python3 scripts/selftest.py "$CONJECT_TIMEOUT"
+
+      # Runs even when a previous step was cancelled or timed out, so the job never ends
+      # without a machine-readable verdict on disk.
+      - name: Guarantee a verdict exists
+        if: always()
+        run: |
+          set -uo pipefail
+          mkdir -p .conject/verdicts
+          if [ -z "$(ls -A .conject/verdicts 2>/dev/null)" ] && [ ! -f verdict.json ]; then
+            python3 - <<'PY'
+          import datetime, json, pathlib
+          pathlib.Path("verdict.json").write_text(json.dumps({
+              "schema": "conject.verdict.v1",
+              "verdict": "red",
+              "reason": "timeout",
+              "detail": "the job produced no verdict before its 20-minute limit",
+              "decl": None,
+              "axioms": [],
+              "elaborated_term_hash": None,
+              "timestamp": datetime.datetime.now(datetime.timezone.utc)
+                            .strftime("%Y-%m-%dT%H:%M:%SZ"),
+          }, indent=2) + "\n")
+          PY
+          fi
+
+      - name: Verdict summary
+        if: always()
+        run: |
+          set -uo pipefail
+          {
+            echo "## Conject verdicts"
+            echo
+            echo "| verdict | reason | statement | submission | term hash |"
+            echo "| --- | --- | --- | --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          python3 - >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import glob, json
+          for f in sorted(glob.glob(".conject/verdicts/*.json")) + glob.glob("verdict.json"):
+              try:
+                  v = json.load(open(f))
+              except Exception:
+                  continue
+              h = (v.get("elaborated_term_hash") or "-")[:24]
+              print(f"| **{v.get('verdict')}** | `{v.get('reason')}` | "
+                    f"{v.get('statement_id')} | `{v.get('submission')}` | `{h}` |")
+          PY
+
+      - name: Upload verdicts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: conject-verdicts
+          path: |
+            verdict.json
+            .conject/verdicts/
+            .conject/work/**/*.lean
+          if-no-files-found: warn

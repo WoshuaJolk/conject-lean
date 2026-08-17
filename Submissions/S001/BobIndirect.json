@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "S001",
+  "module": "Submissions.S001.BobIndirect",
+  "decl": "Submissions.S001.BobIndirect.proof",
+  "author": "bob",
+  "expect": "green",
+  "note": "Independent route via even_mul_pred_self; must hash differently from AliceDirect."
+}
