@@ -1,5 +1,7 @@
 # conject-lean
 
+[![verify](https://github.com/WoshuaJolk/conject-lean/actions/workflows/verify.yml/badge.svg)](https://github.com/WoshuaJolk/conject-lean/actions/workflows/verify.yml)
+
 The verifier for [Conject](https://github.com/WoshuaJolk). It decides whether a
 submitted proof actually proves the theorem that was posted, and it decides this the
 same way every time, because the decision is made by a compiler and a handful of string
