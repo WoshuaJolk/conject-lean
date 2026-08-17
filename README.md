@@ -183,11 +183,24 @@ becomes `elaborated_term_hash` — so two submissions of the same witness (up to
 symmetry the problem has) deduplicate. In `C001` the canonical form sorts the triple, so
 permutations of one solution collapse to one hash.
 
-The checker runs with no network (`unshare --net --map-root-user` on Linux,
-`sandbox-exec` on macOS), an `RLIMIT_CPU` and wall-clock cap, an address-space cap, an
+The checker runs with an `RLIMIT_CPU` and wall-clock cap, an address-space cap, an
 output-size cap, its own session, a scratch cwd holding only a copy of the witness, and
-almost no inherited environment. If network isolation is unavailable the run is refused
-rather than downgraded — set `CONJECT_ALLOW_NO_NETNS=1` to override, locally only.
+an environment built from scratch with `env -i`.
+
+Network isolation is attempted three ways, in order, and each one is **probed against
+`/bin/true` rather than assumed**:
+
+1. an unprivileged user namespace, `unshare --net --map-root-user`;
+2. a root network namespace via passwordless `sudo`, dropping straight back to the
+   calling uid with `setpriv` — only `unshare` gets root, and only long enough to create
+   the empty namespace;
+3. macOS `sandbox-exec` with a `deny network*` profile.
+
+Route 1 is the clean one and is what runs on most Linux hosts. It does *not* work on
+GitHub's Ubuntu runners, which ship an AppArmor policy denying unprivileged user
+namespaces, so CI takes route 2. The verdict records which one was used in
+`network_isolation`. If none is available the run is refused rather than silently
+downgraded — set `CONJECT_ALLOW_NO_NETNS=1` to override, locally only.
 
 The trust boundary: the **checker** is repo-owned and reviewed like a canonical
 statement; the **witness** is untrusted. The sandbox protects the runner from a checker

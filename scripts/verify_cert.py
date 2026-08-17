@@ -66,12 +66,47 @@ MACOS_SANDBOX_PROFILE = """(version 1)
 """
 
 
+TRUE_BIN = shutil.which("true") or "/bin/true"
+
+
+def _probe(argv: list[str]) -> bool:
+    """Actually run the wrapper on /bin/true; never assume a sandbox works."""
+    try:
+        p = subprocess.run(argv + [TRUE_BIN], capture_output=True, timeout=20)
+        return p.returncode == 0
+    except Exception:
+        return False
+
+
 def netns_wrapper() -> tuple[list[str], str]:
-    """Return (argv prefix, description) that removes network access, if we can."""
-    if platform.system() == "Linux" and shutil.which("unshare"):
-        return (["unshare", "--net", "--map-root-user", "--"], "linux-netns")
-    if platform.system() == "Darwin" and shutil.which("sandbox-exec"):
-        return (["sandbox-exec", "-p", MACOS_SANDBOX_PROFILE], "macos-sandbox-exec")
+    """Return (argv prefix, description) that removes network access, if we can.
+
+    Three routes, tried in order and each actually probed rather than assumed:
+
+    1. An unprivileged user namespace. The clean option, but Ubuntu 24.04 (and so the
+       GitHub Actions runners) ships an AppArmor policy that denies it.
+    2. A root network namespace via passwordless sudo, immediately dropping back to the
+       calling uid with `setpriv`. The checker still runs unprivileged; only the
+       `unshare` gets root, and only long enough to create the empty netns.
+    3. macOS `sandbox-exec` with a `deny network*` profile.
+    """
+    system = platform.system()
+    if system == "Linux" and shutil.which("unshare"):
+        userns = ["unshare", "--net", "--map-root-user", "--"]
+        if _probe(userns):
+            return (userns, "linux-userns")
+        if shutil.which("sudo") and shutil.which("setpriv"):
+            sudo_ns = [
+                "sudo", "-n", "unshare", "--net", "--",
+                "setpriv", f"--reuid={os.getuid()}", f"--regid={os.getgid()}",
+                "--clear-groups", "--",
+            ]
+            if _probe(sudo_ns):
+                return (sudo_ns, "linux-sudo-netns")
+    if system == "Darwin" and shutil.which("sandbox-exec"):
+        prof = ["sandbox-exec", "-p", MACOS_SANDBOX_PROFILE]
+        if _probe(prof):
+            return (prof, "macos-sandbox-exec")
     return ([], "none")
 
 
@@ -169,7 +204,11 @@ def main() -> int:
             "PYTHONHASHSEED": "0",
             "PYTHONDONTWRITEBYTECODE": "1",
         }
-        cmd = prefix + [sys.executable, "checker.py", "witness"]
+        # `env -i` rather than relying on inheritance, because the sudo route sanitizes
+        # the environment out from under us. Same command shape on every route.
+        cmd = (prefix + ["/usr/bin/env", "-i"]
+               + [f"{k}={v}" for k, v in sorted(env.items())]
+               + [sys.executable, "checker.py", "witness"])
         t0 = time.monotonic()
         try:
             proc = subprocess.run(
