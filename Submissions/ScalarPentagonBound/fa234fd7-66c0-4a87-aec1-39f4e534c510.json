@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ScalarPentagonBound",
+  "module": "Submissions.ScalarPentagonBound.ScalarBound",
+  "decl": "Submissions.ScalarPentagonBound.ScalarBound.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact fa234fd7-66c0-4a87-aec1-39f4e534c510."
+}
