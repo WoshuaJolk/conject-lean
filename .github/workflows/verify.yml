@@ -15,6 +15,10 @@ on:
         description: "Git ref holding the submission (defaults to this workflow's ref)"
         required: false
         type: string
+      artifact_id:
+        description: "Conject artifact uuid to settle. Derived from the submission filename when omitted."
+        required: false
+        type: string
   pull_request:
   push:
     branches: [main]
@@ -137,6 +141,82 @@ jobs:
               h = (v.get("elaborated_term_hash") or "-")[:24]
               print(f"| **{v.get('verdict')}** | `{v.get('reason')}` | "
                     f"{v.get('statement_id')} | `{v.get('submission')}` | `{h}` |")
+          PY
+
+      # The verdict is worthless sitting in an artifact: it has to reach the
+      # graph or the submission stays `pending` forever and nothing auto-closes.
+      # Signed with the shared secret; the receiver compares in constant time
+      # and is idempotent, so a retry cannot double-settle.
+      - name: Deliver verdicts
+        if: always()
+        env:
+          CONJECT_API_URL: ${{ secrets.CONJECT_API_URL }}
+          CONJECT_WEBHOOK_SECRET: ${{ secrets.CONJECT_WEBHOOK_SECRET }}
+          CONJECT_BYPASS: ${{ secrets.CONJECT_PROTECTION_BYPASS }}
+          ARTIFACT_ID: ${{ inputs.artifact_id }}
+        run: |
+          set -uo pipefail
+          if [ -z "${CONJECT_API_URL:-}" ] || [ -z "${CONJECT_WEBHOOK_SECRET:-}" ]; then
+            echo "::notice::CONJECT_API_URL / CONJECT_WEBHOOK_SECRET not set; verdicts not delivered."
+            exit 0
+          fi
+          python3 - <<'PY'
+          import glob, hmac, hashlib, json, os, re, sys, urllib.error, urllib.request
+
+          base   = os.environ["CONJECT_API_URL"].rstrip("/")
+          secret = os.environ["CONJECT_WEBHOOK_SECRET"].encode()
+          bypass = os.environ.get("CONJECT_BYPASS") or ""
+          forced = (os.environ.get("ARTIFACT_ID") or "").strip()
+          UUID   = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", re.I)
+
+          files = sorted(glob.glob(".conject/verdicts/*.json")) + glob.glob("verdict.json")
+          if not files:
+              print("::warning::no verdict files to deliver")
+              sys.exit(0)
+
+          failed = 0
+          for f in files:
+              try:
+                  v = json.load(open(f))
+              except Exception as e:
+                  print(f"::warning::{f}: unreadable ({e})")
+                  continue
+
+              # The API names submissions Submissions/<label>/<artifact-id>.json
+              # precisely so the id survives the round trip through CI.
+              aid = forced or next(iter(UUID.findall(str(v.get("submission") or ""))), None)
+              if not aid:
+                  print(f"::warning::{f}: no artifact id in '{v.get('submission')}'; not delivered")
+                  continue
+              v["artifact_id"] = aid
+
+              raw = json.dumps(v).encode()
+              sig = hmac.new(secret, raw, hashlib.sha256).hexdigest()
+              req = urllib.request.Request(
+                  f"{base}/api/webhooks/verdict",
+                  data=raw,
+                  method="POST",
+                  headers={
+                      "content-type": "application/json",
+                      "x-conject-signature": f"sha256={sig}",
+                      **({"x-vercel-protection-bypass": bypass} if bypass else {}),
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      body = json.loads(r.read() or b"{}")
+                  print(f"delivered {aid}: {v.get('verdict')} -> "
+                        f"settled={body.get('settled')} idempotent={body.get('idempotent')}")
+              except urllib.error.HTTPError as e:
+                  detail = e.read().decode(errors="replace")[:300]
+                  print(f"::error::{aid}: {e.code} {detail}")
+                  failed += 1
+              except Exception as e:
+                  print(f"::error::{aid}: {e}")
+                  failed += 1
+
+          # Delivery failure must be loud. A silent drop leaves the graph wrong.
+          sys.exit(1 if failed else 0)
           PY
 
       - name: Upload verdicts
