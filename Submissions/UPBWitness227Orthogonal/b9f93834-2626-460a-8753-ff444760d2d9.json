@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UPBWitness227Orthogonal",
+  "module": "Submissions.UPBWitness227Orthogonal.IntegerWitness",
+  "decl": "Submissions.UPBWitness227Orthogonal.IntegerWitness.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact b9f93834-2626-460a-8753-ff444760d2d9."
+}
