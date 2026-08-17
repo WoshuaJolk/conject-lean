@@ -24,7 +24,10 @@ on:
     branches: [main]
 
 concurrency:
-  group: verify-${{ github.ref }}-${{ github.event_name }}
+  # Per submission, not per ref. Every API dispatch targets main, so a ref-wide
+  # group made three artifacts submitted seconds apart cancel each other and left
+  # two pending forever. Push and PR runs carry no inputs and still coalesce.
+  group: verify-${{ github.ref }}-${{ github.event_name }}-${{ github.event.inputs.artifact_id || github.event.inputs.submission || 'branch' }}
   cancel-in-progress: true
 
 permissions:
