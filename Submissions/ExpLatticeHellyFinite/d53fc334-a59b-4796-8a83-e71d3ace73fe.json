@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ExpLatticeHellyFinite",
+  "module": "Submissions.ExpLatticeHellyFinite.MalloryNoErase",
+  "decl": "Submissions.ExpLatticeHellyFinite.MalloryNoErase.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact d53fc334-a59b-4796-8a83-e71d3ace73fe."
+}
