@@ -221,10 +221,16 @@ def main() -> int:
         record(verdict, "static_policy", True)
 
     # --- 2. build -----------------------------------------------------------
+    # The refutation target is imported by the bridge in step 6, so it has to be
+    # built here with everything else. Leaving it out made a missing olean look
+    # like a failed refutation.
+    refutes = manifest.get("refutes")
+    build_targets = [module, statement_module, "Verify.Guard"]
+    if refutes:
+        build_targets.append(f"Statements.{refutes}")
     t0 = time.monotonic()
     try:
-        proc = run(["lake", "build", module, statement_module, "Verify.Guard"],
-                   timeout=remaining())
+        proc = run(["lake", "build", *build_targets], timeout=remaining())
     except subprocess.TimeoutExpired:
         record(verdict, "build", False, "timeout")
         return finish(fail(verdict, "timeout", "step=build: lake build exceeded the wall budget"), args.out)
@@ -342,7 +348,6 @@ def main() -> int:
         verdict["statement_hash"] = sha256_file(pathlib.Path(stmt_audit["term_file"]))
 
     # --- 6. refutation link (only when the manifest declares one) -----------
-    refutes = manifest.get("refutes")
     if refutes:
         target_module = f"Statements.{refutes}"
         target_src = module_to_path(target_module)
@@ -374,8 +379,14 @@ def main() -> int:
                 full = lean_output(proc)
                 d = tail(lean_errors(proc) or full)
                 record(verdict, "refutation", False, d, output=full)
-                fail(verdict, "not_a_refutation",
-                     f"`{statement_const}` is not definitionally `¬ {target_module}.statement`")
+                # An import that did not resolve says nothing about the claim.
+                broken = "does not exist" in full or "unknown module" in full
+                if broken:
+                    fail(verdict, "build_failed",
+                         f"the refutation bridge could not import {target_module}")
+                else:
+                    fail(verdict, "not_a_refutation",
+                         f"`{statement_const}` is not definitionally `¬ {target_module}.statement`")
             else:
                 record(verdict, "refutation", True,
                        f"{statement_const} ↔ ¬ {target_module}.statement")
