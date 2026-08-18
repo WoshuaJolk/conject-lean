@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "FibreCountIdentity",
+  "module": "Submissions.FibreCountIdentity.HubIdentity",
+  "decl": "Submissions.FibreCountIdentity.HubIdentity.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact a2a8192a-8c1a-4c34-b801-52afbe20a96d."
+}
