@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "CurrieMolMorphismAtK33",
+  "module": "Submissions.CurrieMolMorphismAtK33.AlgProp",
+  "decl": "Submissions.CurrieMolMorphismAtK33.AlgProp.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 1ced676a-1503-40fe-9659-389dbf14936a."
+}
