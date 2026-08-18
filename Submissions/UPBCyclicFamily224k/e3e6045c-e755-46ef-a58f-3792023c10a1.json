@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UPBCyclicFamily224k",
+  "module": "Submissions.UPBCyclicFamily224k.Cyclic",
+  "decl": "Submissions.UPBCyclicFamily224k.Cyclic.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact e3e6045c-e755-46ef-a58f-3792023c10a1."
+}
