@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PhiSoundnessGeneral",
+  "module": "Submissions.PhiSoundnessGeneral.Chain",
+  "decl": "Submissions.PhiSoundnessGeneral.Chain.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 8f894ab0-c66c-44fb-8fd7-3ed688c6bfa4."
+}
