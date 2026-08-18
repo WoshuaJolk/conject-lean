@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "EigenwaveKernelWeilOmega",
+  "module": "Submissions.EigenwaveKernelWeilOmega.LemmaB",
+  "decl": "Submissions.EigenwaveKernelWeilOmega.LemmaB.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 123eaa16-8266-46b2-a56f-4cb249ce137b."
+}
