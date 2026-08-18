@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PaleyLocRegular",
+  "module": "Submissions.PaleyLocRegular.CharacterCount",
+  "decl": "Submissions.PaleyLocRegular.CharacterCount.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 119b81c4-ff3e-46d0-9d6e-512bd75849b5."
+}
