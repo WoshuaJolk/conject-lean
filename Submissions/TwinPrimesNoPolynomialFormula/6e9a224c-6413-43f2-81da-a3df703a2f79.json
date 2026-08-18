@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesNoPolynomialFormula",
+  "module": "Submissions.TwinPrimesNoPolynomialFormula.NoPrimeFormula",
+  "decl": "Submissions.TwinPrimesNoPolynomialFormula.NoPrimeFormula.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 6e9a224c-6413-43f2-81da-a3df703a2f79."
+}
