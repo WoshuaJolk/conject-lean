@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "EigenwaveKernelPolarisation",
+  "module": "Submissions.EigenwaveKernelPolarisation.LemmaA",
+  "decl": "Submissions.EigenwaveKernelPolarisation.LemmaA.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact e2c1823b-537b-47a5-a5bf-5afb567b4747."
+}
