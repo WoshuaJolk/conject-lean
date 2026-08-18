@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "DHLTwoIsPolignac",
+  "module": "Submissions.DHLTwoIsPolignac.Polignac",
+  "decl": "Submissions.DHLTwoIsPolignac.Polignac.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 6af93c80-62b0-4af3-a402-6a480aa52703."
+}
