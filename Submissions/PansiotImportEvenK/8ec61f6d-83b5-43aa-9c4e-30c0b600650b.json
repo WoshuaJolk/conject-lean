@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PansiotImportEvenK",
+  "module": "Submissions.PansiotImportEvenK.Orbits",
+  "decl": "Submissions.PansiotImportEvenK.Orbits.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 8ec61f6d-83b5-43aa-9c4e-30c0b600650b."
+}
