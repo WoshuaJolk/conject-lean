@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "KontsevichChainVolVanishes",
+  "module": "Submissions.KontsevichChainVolVanishes.Universal",
+  "decl": "Submissions.KontsevichChainVolVanishes.Universal.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact bd362b06-08a2-4037-bb16-dadd73320b7c."
+}
