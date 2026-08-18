@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ProductConstruction",
+  "module": "Submissions.ProductConstruction.BlockProduct",
+  "decl": "Submissions.ProductConstruction.BlockProduct.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 10b51475-fb2d-4a24-b132-3bd335b69a0a."
+}
