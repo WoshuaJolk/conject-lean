@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ExpLatticeScalingBarrier",
+  "module": "Submissions.ExpLatticeScalingBarrier.Scal",
+  "decl": "Submissions.ExpLatticeScalingBarrier.Scal.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 799bf5fd-913e-4a75-84a1-fc773487c915."
+}
