@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesDHLReduction",
+  "module": "Submissions.TwinPrimesDHLReduction.Reduction",
+  "decl": "Submissions.TwinPrimesDHLReduction.Reduction.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 54df0f65-f9a2-4a3b-99f7-f04ef018cee8."
+}
