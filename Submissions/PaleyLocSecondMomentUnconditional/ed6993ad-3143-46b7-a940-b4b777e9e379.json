@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PaleyLocSecondMomentUnconditional",
+  "module": "Submissions.PaleyLocSecondMomentUnconditional.Control",
+  "decl": "Submissions.PaleyLocSecondMomentUnconditional.Control.weakProof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact ed6993ad-3143-46b7-a940-b4b777e9e379."
+}
