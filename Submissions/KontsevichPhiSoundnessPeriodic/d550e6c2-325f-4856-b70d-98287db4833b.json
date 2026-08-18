@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "KontsevichPhiSoundnessPeriodic",
+  "module": "Submissions.KontsevichPhiSoundnessPeriodic.Restrict",
+  "decl": "Submissions.KontsevichPhiSoundnessPeriodic.Restrict.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact d550e6c2-325f-4856-b70d-98287db4833b."
+}
