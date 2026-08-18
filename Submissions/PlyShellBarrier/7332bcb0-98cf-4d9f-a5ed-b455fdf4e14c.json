@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyShellBarrier",
+  "module": "Submissions.PlyShellBarrier.AnnulusShell",
+  "decl": "Submissions.PlyShellBarrier.AnnulusShell.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 7332bcb0-98cf-4d9f-a5ed-b455fdf4e14c."
+}
