@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "AdmissibleTupleFloor212",
+  "module": "Submissions.AdmissibleTupleFloor212.Floor",
+  "decl": "Submissions.AdmissibleTupleFloor212.Floor.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 1fa38013-ec73-4503-8c48-79302ab8d693."
+}
