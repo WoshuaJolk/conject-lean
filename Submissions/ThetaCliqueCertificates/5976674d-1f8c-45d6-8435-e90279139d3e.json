@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ThetaCliqueCertificates",
+  "module": "Submissions.ThetaCliqueCertificates.WeakDuality",
+  "decl": "Submissions.ThetaCliqueCertificates.WeakDuality.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 5976674d-1f8c-45d6-8435-e90279139d3e."
+}
