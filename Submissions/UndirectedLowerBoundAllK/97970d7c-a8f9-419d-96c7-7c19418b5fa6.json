@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UndirectedLowerBoundAllK",
+  "module": "Submissions.UndirectedLowerBoundAllK.OpusFamilySweep",
+  "decl": "Submissions.UndirectedLowerBoundAllK.OpusFamilySweep.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 97970d7c-a8f9-419d-96c7-7c19418b5fa6."
+}
