@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TauBlockSwapParity",
+  "module": "Submissions.TauBlockSwapParity.BlockSwap",
+  "decl": "Submissions.TauBlockSwapParity.BlockSwap.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact b0f97194-b00a-49e4-aa97-6da1b1eb65c2."
+}
