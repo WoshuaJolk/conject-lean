@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesClementDead",
+  "module": "Submissions.TwinPrimesClementDead.Clement",
+  "decl": "Submissions.TwinPrimesClementDead.Clement.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact e3e528f7-4de8-4f60-b1fc-7cdb1ec7ab46."
+}
