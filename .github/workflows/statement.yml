@@ -1,0 +1,174 @@
+name: statement
+
+# Does a canonical statement compile?
+#
+# Claiming a verifier_id commits Statements/<label>.lean and freezes it: the file
+# is write-once and the label is what every artifact is judged against by name.
+# Nothing used to compile it, so one stale Mathlib name bought a permanently dead
+# label, and every artifact filed against it red with `build_failed` as though the
+# submitter's proof were broken.
+#
+# This settles nothing. It has no artifact and no verdict, and it reports to
+# /api/webhooks/statement-check, which cannot move a status.
+
+on:
+  workflow_dispatch:
+    inputs:
+      label:
+        description: "Canonical statement label, e.g. KunzCone"
+        required: true
+        type: string
+
+concurrency:
+  group: statement-${{ github.event.inputs.label }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          set -euo pipefail
+          curl -sSfL https://elan.lean-lang.org/elan-init.sh -o elan-init.sh
+          bash elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Cache Mathlib
+        uses: actions/cache@v4
+        with:
+          path: .lake/packages
+          key: mathlib-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Cache build output
+        uses: actions/cache@v4
+        with:
+          path: .lake/build
+          key: conject-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-${{ hashFiles('Commons/**', 'Statements/**', 'Submissions/**', 'Verify/**') }}
+          restore-keys: |
+            conject-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}-
+
+      - name: Fetch Mathlib oleans
+        timeout-minutes: 12
+        run: lake exe cache get
+
+      # Build the one module, then confirm it really declares `statement` as a
+      # Prop. A file that compiles but declares nothing by that name is just as
+      # dead: the verifier resolves the canonical type BY NAME.
+      - name: Build the statement
+        id: build
+        timeout-minutes: 25
+        env:
+          LABEL: ${{ inputs.label }}
+        run: |
+          set -uo pipefail
+          if [ ! -f "Statements/$LABEL.lean" ]; then
+            echo "detail=no Statements/$LABEL.lean on the branch" >> "$GITHUB_OUTPUT"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          out="$(lake build "Statements.$LABEL" 2>&1)"; status=$?
+          if [ "$status" -ne 0 ]; then
+            printf '%s\n' "$out" | tail -40
+            {
+              echo "ok=false"
+              echo "detail<<EOF"
+              printf '%s\n' "$out" | grep -E "error:|CONJECT_ERROR" | head -20
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          cat > .statement-probe.lean <<EOF
+          import Statements.$LABEL
+          #check (Statements.$LABEL.statement : Prop)
+          EOF
+          probe="$(lake env lean .statement-probe.lean 2>&1)"; status=$?
+          if [ "$status" -ne 0 ]; then
+            printf '%s\n' "$probe" | tail -20
+            {
+              echo "ok=false"
+              echo "detail<<EOF"
+              echo "builds, but Statements.$LABEL.statement is not a Prop declared there:"
+              printf '%s\n' "$probe" | grep -E "error:" | head -10
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+          echo "detail=Statements.$LABEL builds and declares statement : Prop" >> "$GITHUB_OUTPUT"
+
+      # Always delivered, green or red: "it does not compile" is the answer worth
+      # having, and a run that says nothing leaves the graph believing the label
+      # is fine.
+      - name: Report
+        if: always() && !cancelled()
+        env:
+          CONJECT_API_URL: ${{ secrets.CONJECT_API_URL }}
+          CONJECT_WEBHOOK_SECRET: ${{ secrets.CONJECT_WEBHOOK_SECRET }}
+          CONJECT_BYPASS: ${{ secrets.CONJECT_PROTECTION_BYPASS }}
+          LABEL: ${{ inputs.label }}
+          OK: ${{ steps.build.outputs.ok }}
+          DETAIL: ${{ steps.build.outputs.detail }}
+        run: |
+          set -uo pipefail
+          if [ -z "${CONJECT_API_URL:-}" ] || [ -z "${CONJECT_WEBHOOK_SECRET:-}" ]; then
+            echo "::notice::not configured; nothing delivered"
+            exit 0
+          fi
+          export RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          python3 - <<'PY'
+          import hashlib, hmac, json, os, urllib.error, urllib.request
+
+          base   = os.environ["CONJECT_API_URL"].rstrip("/")
+          secret = os.environ["CONJECT_WEBHOOK_SECRET"].encode()
+          bypass = os.environ.get("CONJECT_BYPASS") or ""
+          ok     = os.environ.get("OK") == "true"
+          detail = os.environ.get("DETAIL") or ("the job produced no answer" if not ok else "")
+
+          rev = ""
+          try:
+              man = json.load(open("lake-manifest.json"))
+              rev = next((p.get("rev", "") for p in man.get("packages", [])
+                          if p.get("name") == "mathlib"), "")
+          except Exception:
+              pass
+
+          raw = json.dumps({
+              "label": os.environ["LABEL"],
+              "ok": ok,
+              "detail": detail[:8000],
+              "mathlib_rev": rev,
+              "run_url": os.environ.get("RUN_URL"),
+          }).encode()
+          sig = hmac.new(secret, raw, hashlib.sha256).hexdigest()
+          req = urllib.request.Request(
+              f"{base}/api/webhooks/statement-check",
+              data=raw,
+              method="POST",
+              headers={
+                  "content-type": "application/json",
+                  "x-conject-signature": f"sha256={sig}",
+                  **({"x-vercel-protection-bypass": bypass} if bypass else {}),
+              },
+          )
+          try:
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  print(r.read().decode(errors="replace"))
+          except urllib.error.HTTPError as e:
+              print(f"::error::{e.code} {e.read().decode(errors='replace')[:300]}")
+              raise SystemExit(1)
+          PY
+
+      # A statement that does not compile should read as a failed check here too.
+      - name: Fail if it does not build
+        if: steps.build.outputs.ok != 'true'
+        run: |
+          echo "::error::Statements/${{ inputs.label }}.lean does not build"
+          exit 1
