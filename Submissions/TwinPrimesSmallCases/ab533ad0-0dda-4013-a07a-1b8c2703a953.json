@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesSmallCases",
+  "module": "Submissions.TwinPrimesSmallCases.KernelData",
+  "decl": "Submissions.TwinPrimesSmallCases.KernelData.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact ab533ad0-0dda-4013-a07a-1b8c2703a953."
+}
