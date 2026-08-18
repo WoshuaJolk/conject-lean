@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausBaseTwo",
+  "module": "Submissions.ErdosStrausBaseTwo.JigPoseDegenerate",
+  "decl": "Submissions.ErdosStrausBaseTwo.JigPoseDegenerate.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact 32ddde30-3c07-4b4f-9603-9a4d8e65eb1e."
+}
