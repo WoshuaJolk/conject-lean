@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesNoLocalObstruction",
+  "module": "Submissions.TwinPrimesNoLocalObstruction.LocalUnobstructed",
+  "decl": "Submissions.TwinPrimesNoLocalObstruction.LocalUnobstructed.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 806a28ca-d78a-4fb4-a9fe-4a6d141e8c5e."
+}
