@@ -52,11 +52,24 @@ from conject_common import (  # noqa: E402
 
 MARKER = "CONJECT_CERT:"
 
+# A checker earns proof-grade by being cheap to re-run: anyone can repeat 30
+# seconds of arithmetic, and a claim nobody repeats is testimony with extra
+# steps. A checker that needs more than this is doing the search rather than
+# checking a witness, which is why the heavy lane exists and why Jig records an
+# artifact verified in it as measurement-grade.
 DEFAULT_LIMITS = {
     "wall_sec": 60,
     "cpu_sec": 30,
     "address_space_mb": 2048,
     "output_bytes": 1 << 20,
+}
+
+# The ceiling a spec may raise itself to, and only in the heavy lane.
+HEAVY_LIMITS = {
+    "wall_sec": 2700,
+    "cpu_sec": 2400,
+    "address_space_mb": 8192,
+    "output_bytes": 1 << 24,
 }
 
 MACOS_SANDBOX_PROFILE = """(version 1)
@@ -171,11 +184,19 @@ def main() -> int:
         return finish(fail(verdict, "missing_witness", d), args.out)
     record(verdict, "manifest", True)
 
+    heavy = os.environ.get("CONJECT_LANE") == "heavy"
     limits = dict(DEFAULT_LIMITS)
     spec_path = problem_dir / "spec.json"
     if spec_path.exists():
         limits.update(json.loads(spec_path.read_text()).get("limits", {}))
+    # A spec may raise its own limits, but never past the lane it is running in:
+    # the sandbox is what makes a checker's cost knowable in advance.
+    ceiling = HEAVY_LIMITS if heavy else DEFAULT_LIMITS
+    for k, cap in ceiling.items():
+        if limits.get(k, cap) > cap:
+            limits[k] = cap
     limits["wall_sec"] = min(limits["wall_sec"], args.timeout)
+    verdict["lane"] = "heavy" if heavy else "default"
     verdict["limits"] = limits
     verdict["checker_hash"] = sha256_file(checker)
     verdict["witness_hash"] = sha256_file(witness)
