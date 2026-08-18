@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "EigenwaveKernelPolarisation",
+  "module": "Submissions.EigenwaveKernelPolarisation.Weak",
+  "decl": "Submissions.EigenwaveKernelPolarisation.Weak.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact dcb0fb19-a08e-4492-9eb9-10c506adc509."
+}
