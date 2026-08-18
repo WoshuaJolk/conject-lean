@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "KontsevichPhiIffContained",
+  "module": "Submissions.KontsevichPhiIffContained.Kappa",
+  "decl": "Submissions.KontsevichPhiIffContained.Kappa.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact adedc8d1-e16e-4aa9-a6ec-235018d078a8."
+}
