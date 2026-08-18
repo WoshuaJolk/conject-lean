@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "DHL50ImpliesH1Le246",
+  "module": "Submissions.DHL50ImpliesH1Le246.MitulS",
+  "decl": "Submissions.DHL50ImpliesH1Le246.MitulS.proof",
+  "author": "mitul-s",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 100a7a46-9fc3-4aba-9395-d08108755171."
+}
