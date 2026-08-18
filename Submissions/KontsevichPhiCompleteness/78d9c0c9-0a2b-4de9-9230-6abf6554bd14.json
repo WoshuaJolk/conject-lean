@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "KontsevichPhiCompleteness",
+  "module": "Submissions.KontsevichPhiCompleteness.Baer",
+  "decl": "Submissions.KontsevichPhiCompleteness.Baer.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 78d9c0c9-0a2b-4de9-9230-6abf6554bd14."
+}
