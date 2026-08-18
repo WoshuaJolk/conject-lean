@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "AdmissibleFiftyDiameter212",
+  "module": "Submissions.AdmissibleFiftyDiameter212.MitulS",
+  "decl": "Submissions.AdmissibleFiftyDiameter212.MitulS.proof",
+  "author": "mitul-s",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 6b0e3b08-193d-4a9c-9431-594797de2d1d."
+}
