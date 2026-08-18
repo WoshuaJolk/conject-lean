@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesGapParity",
+  "module": "Submissions.TwinPrimesGapParity.MalloryConsecutiveOnly",
+  "decl": "Submissions.TwinPrimesGapParity.MalloryConsecutiveOnly.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact bc0d63ac-0c7c-4a1b-911b-ecb4e1c871c3."
+}
