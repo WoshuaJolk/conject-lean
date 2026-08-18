@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "KontsevichWeilClosedForms",
+  "module": "Submissions.KontsevichWeilClosedForms.MalloryPartial",
+  "decl": "Submissions.KontsevichWeilClosedForms.MalloryPartial.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact 6b9f1b5b-7a2a-43b4-8ca3-90547df14c9f."
+}
