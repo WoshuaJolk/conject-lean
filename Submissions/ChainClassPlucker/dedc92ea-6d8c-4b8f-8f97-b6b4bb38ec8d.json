@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ChainClassPlucker",
+  "module": "Submissions.ChainClassPlucker.Plk",
+  "decl": "Submissions.ChainClassPlucker.Plk.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact dedc92ea-6d8c-4b8f-8f97-b6b4bb38ec8d."
+}
