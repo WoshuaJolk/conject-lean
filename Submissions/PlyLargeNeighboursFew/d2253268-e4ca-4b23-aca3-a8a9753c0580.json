@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyLargeNeighboursFew",
+  "module": "Submissions.PlyLargeNeighboursFew.TestAxes",
+  "decl": "Submissions.PlyLargeNeighboursFew.TestAxes.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact d2253268-e4ca-4b23-aca3-a8a9753c0580."
+}
