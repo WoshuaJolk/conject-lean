@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PhiSoundnessGeneral",
+  "module": "Submissions.PhiSoundnessGeneral.Weak",
+  "decl": "Submissions.PhiSoundnessGeneral.Weak.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact d8d91c57-d9c0-4a61-933f-90dffaa65bb3."
+}
