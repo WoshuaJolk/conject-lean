@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "KontsevichWeilClosedForms",
+  "module": "Submissions.KontsevichWeilClosedForms.Errata",
+  "decl": "Submissions.KontsevichWeilClosedForms.Errata.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact bbe7d74e-d89e-4185-a235-67f9a612265d."
+}
