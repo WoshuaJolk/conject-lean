@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "WeilDegenerationSplit",
+  "module": "Submissions.WeilDegenerationSplit.Kernel",
+  "decl": "Submissions.WeilDegenerationSplit.Kernel.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 41ac91bf-da5a-4ef3-b405-c3cd10a2d294."
+}
