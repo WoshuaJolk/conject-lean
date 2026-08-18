@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesH1ENat",
+  "module": "Submissions.TwinPrimesH1ENat.Bridge",
+  "decl": "Submissions.TwinPrimesH1ENat.Bridge.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 5f21ef75-1418-43b1-91c4-07808cae89a1."
+}
