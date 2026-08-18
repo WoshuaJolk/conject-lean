@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MaynardTaoM2CeilingAtTwo",
+  "module": "Submissions.MaynardTaoM2CeilingAtTwo.CauchySchwarzCeiling",
+  "decl": "Submissions.MaynardTaoM2CeilingAtTwo.CauchySchwarzCeiling.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact c06de1af-130d-41e8-982d-543caf62b844."
+}
