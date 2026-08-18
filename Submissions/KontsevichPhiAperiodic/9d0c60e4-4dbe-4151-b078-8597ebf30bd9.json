@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "KontsevichPhiAperiodic",
+  "module": "Submissions.KontsevichPhiAperiodic.Explicit",
+  "decl": "Submissions.KontsevichPhiAperiodic.Explicit.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 9d0c60e4-4dbe-4151-b078-8597ebf30bd9."
+}
