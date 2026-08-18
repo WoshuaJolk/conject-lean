@@ -95,7 +95,10 @@ NEXT_STEP = {
     "statement_id_mismatch": "The manifest names a different statement than the dispatch did.",
     "timeout": (
         "A step exceeded its budget. The detail names the step. If it was the build, the "
-        "proof is too slow, not wrong."
+        "proof is too slow, not wrong. `step=anti_restatement` or `step=refutation` means "
+        "the bridge ran out of elaboration budget and decided nothing: make the canonical "
+        "statement cheaper to unfold (fold big definitions into named ones) rather than "
+        "restating it."
     ),
     "verifier_error": "The verifier crashed. Not your fault; report it rather than resubmitting.",
     "run_cancelled": (

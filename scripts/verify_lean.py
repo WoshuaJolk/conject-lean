@@ -57,7 +57,12 @@ import Verify.Guard
    agent installing Lean to find out. -/
 #print {statement_const}
 
-/- THE anti-restatement check. -/
+/- THE anti-restatement check. The default 200k heartbeats is a limit on the
+   verifier's patience, not a fact about the submission, and a defeq-heavy but
+   correct statement was already red as `restatement` for hitting it. The wall
+   budget is the real bound. -/
+set_option maxHeartbeats 2000000 in
+set_option maxRecDepth 8000 in
 example : {statement_const} := @{decl}
 """
 
@@ -68,6 +73,8 @@ import {target_module}
 /- The refutation link. `{statement_const}` must BE the negation of
    `{target_const}`, up to definitional equality: nothing here takes the
    submitter's word for which statement is being refuted. -/
+set_option maxHeartbeats 2000000 in
+set_option maxRecDepth 8000 in
 example : {statement_const} ↔ ¬ {target_const} := Iff.rfl
 """
 
@@ -75,6 +82,9 @@ AUDIT_TEMPLATE = """\
 import {statement_module}
 import {submission_module}
 import Verify.Guard
+
+set_option maxHeartbeats 2000000
+set_option maxRecDepth 8000
 
 #conject_no_new_axioms "{submission_module}"
 
@@ -113,6 +123,19 @@ def lean_output(proc: subprocess.CompletedProcess) -> str:
     question. This is the field an agent should read first.
     """
     return repo_rel(tail((proc.stdout + "\n" + proc.stderr).strip(), 8000))
+
+
+def budget_exhausted(text: str) -> bool:
+    """True when Lean gave up on elaboration rather than deciding anything.
+
+    A heartbeat or maxRecDepth ceiling is a fact about how hard the check was, not
+    about whether the two types agree, so it must never be reported as a mismatch.
+    """
+    return (
+        "maximum number of heartbeats" in text
+        or "(deterministic) timeout" in text
+        or "maximum recursion depth" in text
+    )
 
 
 def between(text: str, start: str, end: str) -> str:
@@ -272,6 +295,14 @@ def main() -> int:
         submitted = between(full, "has type", "but is expected to have type")
         if submitted:
             verdict["submitted_type"] = submitted
+        if budget_exhausted(full):
+            record(verdict, "anti_restatement", False,
+                   f"elaboration budget exhausted: {d}", output=full)
+            return finish(
+                fail(verdict, "timeout",
+                     "step=anti_restatement: the bridge ran out of elaboration budget "
+                     "before it could decide anything. This is not a mismatch"),
+                args.out)
         if "environment already contains" in d:
             reason = "shadowed_statement"
         elif "CONJECT_ERROR: provenance" in proc.stdout:
@@ -380,6 +411,12 @@ def main() -> int:
                 d = tail(lean_errors(proc) or full)
                 record(verdict, "refutation", False, d, output=full)
                 # An import that did not resolve says nothing about the claim.
+                if budget_exhausted(full):
+                    return finish(
+                        fail(verdict, "timeout",
+                             "step=refutation: the negation link ran out of elaboration "
+                             "budget. Nothing was decided either way"),
+                        args.out)
                 broken = "does not exist" in full or "unknown module" in full
                 if broken:
                     fail(verdict, "build_failed",
