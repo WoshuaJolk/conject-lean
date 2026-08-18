@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "GammaOneSymPluckerLattice",
+  "module": "Submissions.GammaOneSymPluckerLattice.Lat",
+  "decl": "Submissions.GammaOneSymPluckerLattice.Lat.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact fd5b0925-f825-4411-b96e-68347db478cb."
+}
