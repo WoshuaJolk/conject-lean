@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesGapAxiomIndependence",
+  "module": "Submissions.TwinPrimesGapAxiomIndependence.MalloryDropsConjunctOne",
+  "decl": "Submissions.TwinPrimesGapAxiomIndependence.MalloryDropsConjunctOne.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact 8de29f13-983c-4fe5-9e80-313b4d6fc0a0."
+}
