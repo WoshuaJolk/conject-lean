@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesH1ENat",
+  "module": "Submissions.TwinPrimesH1ENat.MalloryOneWay",
+  "decl": "Submissions.TwinPrimesH1ENat.MalloryOneWay.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact c746f100-3f6d-41fa-a987-9be3c2c9de39."
+}
