@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyDegreeGaussian",
+  "module": "Submissions.PlyDegreeGaussian.Poser",
+  "decl": "Submissions.PlyDegreeGaussian.Poser.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact e5759cdb-a1cf-4404-aeea-d85474b5f23d."
+}
