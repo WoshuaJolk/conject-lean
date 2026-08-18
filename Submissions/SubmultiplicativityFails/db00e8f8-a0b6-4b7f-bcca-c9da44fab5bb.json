@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "SubmultiplicativityFails",
+  "module": "Submissions.SubmultiplicativityFails.PentagonUnitCase",
+  "decl": "Submissions.SubmultiplicativityFails.PentagonUnitCase.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact db00e8f8-a0b6-4b7f-bcca-c9da44fab5bb."
+}
