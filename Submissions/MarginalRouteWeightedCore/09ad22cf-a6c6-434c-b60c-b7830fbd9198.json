@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MarginalRouteWeightedCore",
+  "module": "Submissions.MarginalRouteWeightedCore.TwoSquares",
+  "decl": "Submissions.MarginalRouteWeightedCore.TwoSquares.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 09ad22cf-a6c6-434c-b60c-b7830fbd9198."
+}
