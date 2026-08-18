@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "AdmissibleTupleLadder",
+  "module": "Submissions.AdmissibleTupleLadder.Ladder",
+  "decl": "Submissions.AdmissibleTupleLadder.Ladder.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 672e8b41-b579-4c94-ab7b-972e8b5c7308."
+}

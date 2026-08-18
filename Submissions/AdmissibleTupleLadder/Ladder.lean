@@ -2,185 +2,154 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Data.Finset.Image
 import Mathlib.Data.Finset.Lattice.Fold
-import Mathlib.Tactic
-
-/-!
-Witness for `Statements.AdmissibleTupleLadder.statement`.
-
-**The mechanism.**  Admissibility at `p = 2` puts all of `T` in one class mod 2; at `p = 3`
-it leaves only two of the three classes mod 3.  So any *three* distinct elements have two
-agreeing mod 3, and those two also agree mod 2, hence agree mod 6 and differ by at least 6.
-Applied to the three largest elements this says: deleting the top two elements of `T` costs
-at least 6 of the diameter.  Strong induction in steps of two then gives the ladder, with
-`k ≤ 1` and `k = 2` as the base cases (`k = 2` uses only the mod-2 fact).
-
-No sorted enumeration is needed: the induction deletes `max'` twice and recurses.
--/
+import Mathlib.Data.Finset.Max
+import Mathlib.Tactic.IntervalCases
+import Mathlib.Order.Interval.Finset.Nat
+import Mathlib.Tactic.NormNum
 
 namespace Submissions.AdmissibleTupleLadder.Ladder
 
-/-- The two consequences of admissibility that the ladder actually uses.  Both are inherited
-by subsets, which is what makes the induction go through. -/
-def P (T : Finset ℕ) : Prop :=
-  (∀ x ∈ T, ∀ y ∈ T, x % 2 = y % 2) ∧ (∃ r3 : ℕ, r3 < 3 ∧ ∀ x ∈ T, x % 3 ≠ r3)
+def Adm (T : Finset ℕ) : Prop :=
+  ∀ p : ℕ, p.Prime → ∃ r : ℕ, r < p ∧ ∀ x ∈ T, x % p ≠ r
 
-private lemma P_mono {S T : Finset ℕ} (hst : S ⊆ T) (h : P T) : P S := by
-  obtain ⟨h2, r3, hr3, h3⟩ := h
-  exact ⟨fun x hx y hy => h2 x (hst hx) y (hst hy), r3, hr3, fun x hx => h3 x (hst hx)⟩
+theorem Adm.mono {S T : Finset ℕ} (h : S ⊆ T) (hT : Adm T) : Adm S := by
+  intro p hp
+  obtain ⟨r, hr, hall⟩ := hT p hp
+  exact ⟨r, hr, fun x hx => hall x (h hx)⟩
 
-private lemma P_of_admissible {T : Finset ℕ}
-    (h : ∀ p : ℕ, p.Prime → ∃ r : ℕ, r < p ∧ ∀ x ∈ T, x % p ≠ r) : P T := by
-  obtain ⟨r2, hr2, h2⟩ := h 2 Nat.prime_two
-  obtain ⟨r3, hr3, h3⟩ := h 3 Nat.prime_three
-  refine ⟨fun x hx y hy => ?_, r3, hr3, h3⟩
-  have hx2 := h2 x hx
-  have hy2 := h2 y hy
-  interval_cases r2 <;> omega
+/-- Three integers inside a window of width 5 meet every class mod 2 or every class mod 3. -/
+theorem width_five (T : Finset ℕ) (lo : ℕ)
+    (hw : ∀ x ∈ T, lo ≤ x ∧ x ≤ lo + 5) (hadm : Adm T) : T.card ≤ 2 := by
+  obtain ⟨s, hs2, hs⟩ := hadm 2 Nat.prime_two
+  obtain ⟨r, hr3, hr⟩ := hadm 3 Nat.prime_three
+  have hinj : Set.InjOn (fun x => x % 6) (T : Set ℕ) := by
+    intro x hx y hy h
+    obtain ⟨hx1, hx2⟩ := hw x (by simpa using hx)
+    obtain ⟨hy1, hy2⟩ := hw y (by simpa using hy)
+    simp only at h
+    omega
+  have himg : T.image (fun x => x % 6) ⊆
+      (Finset.range 6).filter (fun c => c % 2 ≠ s ∧ c % 3 ≠ r) := by
+    intro c hc
+    obtain ⟨x, hx, rfl⟩ := Finset.mem_image.1 hc
+    have h2 := hs x hx
+    have h3 := hr x hx
+    refine Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), ?_, ?_⟩ <;> omega
+  have hcard : ((Finset.range 6).filter (fun c => c % 2 ≠ s ∧ c % 3 ≠ r)).card ≤ 2 := by
+    interval_cases s <;> interval_cases r <;> decide
+  calc T.card = (T.image (fun x => x % 6)).card := (Finset.card_image_of_injOn hinj).symm
+    _ ≤ _ := Finset.card_le_card himg
+    _ ≤ 2 := hcard
 
-/-- Two distinct elements of `T` differ by at least 2. -/
-private lemma two_of_two {T : Finset ℕ} (hP : P T) {x y : ℕ}
-    (hx : x ∈ T) (hy : y ∈ T) (hxy : x < y) : 2 ≤ y - x := by
-  have := hP.1 x hx y hy
+/-- The ladder: `f k` is the least diameter that `k` points can have. -/
+def f (k : ℕ) : ℕ := 6 * ((k - 1) / 2) + 2 * ((k - 1) % 2)
+
+theorem f_mono {a b : ℕ} (h : a ≤ b) : f a ≤ f b := by unfold f; omega
+
+theorem f_step {k : ℕ} (h : 3 ≤ k) : f k = f (k - 2) + 6 := by unfold f; omega
+
+theorem two_apart (T : Finset ℕ) (lo d : ℕ) (h2 : 2 ≤ T.card)
+    (hw : ∀ x ∈ T, lo ≤ x ∧ x ≤ lo + d) (hadm : Adm T) : 2 ≤ d := by
+  obtain ⟨s, hs2, hs⟩ := hadm 2 Nat.prime_two
+  obtain ⟨a, ha', b, hb', hab⟩ := Finset.one_lt_card.1 h2
+  have ha := hw a ha'
+  have hb := hw b hb'
+  have hsa := hs a ha'
+  have hsb := hs b hb'
   omega
 
-/-- Two naturals agreeing mod 2 and mod 3 agree mod 6, so a strict pair differs by ≥ 6. -/
-private lemma six_of_pair {u v : ℕ} (h2 : u % 2 = v % 2) (h3 : u % 3 = v % 3) (h : u < v) :
-    6 ≤ v - u := by
-  have d2 : 2 ∣ (v - u) := by omega
-  have d3 : 3 ∣ (v - u) := by omega
-  have d6 : 2 * 3 ∣ (v - u) := Nat.Coprime.mul_dvd_of_dvd_of_dvd (by norm_num) d2 d3
-  exact Nat.le_of_dvd (by omega) (by simpa using d6)
-
-/-- Three distinct elements of `T` span at least 6: two of them agree mod 3, and everything
-in `T` agrees mod 2, so those two agree mod 6. -/
-private lemma six_of_three {T : Finset ℕ} (hP : P T) {x y z : ℕ}
-    (hx : x ∈ T) (hy : y ∈ T) (hz : z ∈ T) (hxy : x < y) (hyz : y < z) : 6 ≤ z - x := by
-  obtain ⟨h2, r3, hr3, h3⟩ := hP
-  have e1 := h2 x hx y hy
-  have e2 := h2 y hy z hz
-  have e3 := h2 x hx z hz
-  have n1 := h3 x hx
-  have n2 := h3 y hy
-  have n3 := h3 z hz
-  have hdisj : x % 3 = y % 3 ∨ y % 3 = z % 3 ∨ x % 3 = z % 3 := by
-    interval_cases r3 <;> omega
-  rcases hdisj with h | h | h
-  · have := six_of_pair e1 h hxy; omega
-  · have := six_of_pair e2 h hyz; omega
-  · exact six_of_pair e3 h (by omega)
-
-/-- The ladder, by strong induction on the cardinality in steps of two. -/
-private lemma ladder : ∀ k : ℕ, ∀ (T : Finset ℕ) (lo d : ℕ), T.card = k →
-    (∀ x ∈ T, lo ≤ x ∧ x ≤ lo + d) → P T →
-    6 * ((k - 1) / 2) + 2 * ((k - 1) % 2) ≤ d := by
+theorem ladder : ∀ k : ℕ, ∀ (T : Finset ℕ) (lo d : ℕ), T.card = k →
+    (∀ x ∈ T, lo ≤ x ∧ x ≤ lo + d) → Adm T → f k ≤ d := by
   intro k
   induction k using Nat.strong_induction_on with
   | _ k ih =>
-    intro T lo d hcard hbd hP
-    rcases Nat.lt_or_ge k 2 with hk | hk
-    · interval_cases k <;> simp
-    rcases Nat.lt_or_ge k 3 with hk3 | hk3
-    · -- k = 2 : two distinct elements of the same parity
-      have h2 : 2 = k := by omega
-      obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp (by omega : 1 < T.card)
-      rcases Nat.lt_or_ge x y with hlt | hge
-      · have := two_of_two hP hx hy hlt
-        have := (hbd x hx).1; have := (hbd y hy).2
-        interval_cases k <;> omega
-      · have hlt : y < x := lt_of_le_of_ne hge (Ne.symm hxy)
-        have := two_of_two hP hy hx hlt
-        have := (hbd y hy).1; have := (hbd x hx).2
-        interval_cases k <;> omega
-    · -- k ≥ 3 : delete the top two elements, losing at least 6 of the diameter
-      have hne : T.Nonempty := by rw [← Finset.card_pos, hcard]; omega
-      have ha : T.max' hne ∈ T := T.max'_mem hne
-      set a := T.max' hne with hadef
-      have hc1 : (T.erase a).card = k - 1 := by rw [Finset.card_erase_of_mem ha, hcard]
-      have hne1 : (T.erase a).Nonempty := by rw [← Finset.card_pos, hc1]; omega
-      have hb1 : (T.erase a).max' hne1 ∈ T.erase a := (T.erase a).max'_mem hne1
-      set b := (T.erase a).max' hne1 with hbdef
-      have hbT : b ∈ T := Finset.mem_of_mem_erase hb1
-      have hc2 : ((T.erase a).erase b).card = k - 2 := by
-        rw [Finset.card_erase_of_mem hb1, hc1]; omega
-      have hne2 : ((T.erase a).erase b).Nonempty := by rw [← Finset.card_pos, hc2]; omega
-      have hcc : ((T.erase a).erase b).max' hne2 ∈ (T.erase a).erase b :=
-        ((T.erase a).erase b).max'_mem hne2
-      set c := ((T.erase a).erase b).max' hne2 with hcdef
-      have hcT1 : c ∈ T.erase a := Finset.mem_of_mem_erase hcc
-      have hcT : c ∈ T := Finset.mem_of_mem_erase hcT1
-      have hba : b < a := lt_of_le_of_ne (T.le_max' b hbT) (Finset.ne_of_mem_erase hb1)
-      have hcb : c < b := lt_of_le_of_ne ((T.erase a).le_max' c hcT1)
-        (Finset.ne_of_mem_erase hcc)
-      have h6 : 6 ≤ a - c := six_of_three hP hcT hbT ha hcb hba
-      have hsub : (T.erase a).erase b ⊆ T :=
-        (Finset.erase_subset _ _).trans (Finset.erase_subset _ _)
-      have hbd2 : ∀ x ∈ (T.erase a).erase b, lo ≤ x ∧ x ≤ lo + (c - lo) := by
+    intro T lo d hcard hw hadm
+    rcases Nat.lt_or_ge k 3 with hk | hk
+    · interval_cases k
+      · simp [f]
+      · simp [f]
+      · exact le_trans (by simp [f]) (two_apart T lo d (by omega) hw hadm)
+    · -- k ≥ 3
+      have hne : T.Nonempty := Finset.card_pos.1 (by omega)
+      set m := T.max' hne with hm
+      have hmT : m ∈ T := T.max'_mem hne
+      have hmle : ∀ x ∈ T, x ≤ m := fun x hx => T.le_max' x hx
+      -- the top window [m-5, m] holds at most two elements
+      have htop : (T.filter (fun x => ¬ (x + 6 ≤ m))).card ≤ 2 := by
+        refine width_five _ (m - 5) ?_ (Adm.mono (Finset.filter_subset _ _) hadm)
         intro x hx
-        have h1 := (hbd x (hsub hx)).1
-        have h2 : x ≤ c := ((T.erase a).erase b).le_max' x hx
-        have h3 := (hbd c hcT).1
+        obtain ⟨hxT, hxc⟩ := Finset.mem_filter.1 hx
+        have := hmle x hxT
+        simp only [not_le] at hxc
         omega
-      have key := ih (k - 2) (by omega) ((T.erase a).erase b) lo (c - lo) hc2 hbd2
-        (P_mono hsub hP)
-      have hale := (hbd a ha).2
-      have hclo := (hbd c hcT).1
-      omega
+      have hsplit : T.card ≤ (T.filter (fun x => x + 6 ≤ m)).card
+          + (T.filter (fun x => ¬ (x + 6 ≤ m))).card := by
+        rw [Finset.card_filter_add_card_filter_not (fun x => x + 6 ≤ m)]
+      have hlow : k - 2 ≤ (T.filter (fun x => x + 6 ≤ m)).card := by omega
+      -- m is at least lo + 6, since T does not fit in a window of width 5
+      have hm6 : lo + 6 ≤ m := by
+        by_contra hc
+        have : T.card ≤ 2 := by
+          refine width_five T lo (fun x hx => ?_) hadm
+          have := hw x hx; have := hmle x hx; omega
+        omega
+      have hsub := ih (T.filter (fun x => x + 6 ≤ m)).card ?_
+        (T.filter (fun x => x + 6 ≤ m)) lo (m - 6 - lo) rfl ?_
+        (Adm.mono (Finset.filter_subset _ _) hadm)
+      · have hmd : m ≤ lo + d := (hw m hmT).2
+        have : f (k - 2) ≤ f (T.filter (fun x => x + 6 ≤ m)).card := f_mono hlow
+        rw [f_step hk]
+        omega
+      · have : (T.filter (fun x => x + 6 ≤ m)).card ≤ T.card :=
+          Finset.card_le_card (Finset.filter_subset _ _)
+        have hnm : ¬ (m + 6 ≤ m) := by omega
+        have : m ∉ T.filter (fun x => x + 6 ≤ m) := by
+          simp only [Finset.mem_filter]; tauto
+        have hss : T.filter (fun x => x + 6 ≤ m) ⊂ T :=
+          Finset.ssubset_iff_of_subset (Finset.filter_subset _ _) |>.2 ⟨m, hmT, this⟩
+        have := Finset.card_lt_card hss
+        omega
+      · intro x hx
+        obtain ⟨hxT, hxc⟩ := Finset.mem_filter.1 hx
+        have := (hw x hxT).1
+        omega
 
-/-- Pigeonhole: for `p` larger than `T.card`, admissibility at `p` is automatic. -/
-private lemma admissible_of_small {T : Finset ℕ} {B : ℕ} (hcard : T.card < B)
-    (hsmall : ∀ p : ℕ, p.Prime → p < B → ∃ r : ℕ, r < p ∧ ∀ x ∈ T, x % p ≠ r) :
-    ∀ p : ℕ, p.Prime → ∃ r : ℕ, r < p ∧ ∀ x ∈ T, x % p ≠ r := by
+
+theorem omit_of_card_lt (T : Finset ℕ) (p : ℕ) (hp : 0 < p) (h : T.card < p) :
+    ∃ r : ℕ, r < p ∧ ∀ x ∈ T, x % p ≠ r := by
+  have hsub : T.image (fun x => x % p) ⊆ Finset.range p := by
+    intro y hy
+    obtain ⟨x, _, rfl⟩ := Finset.mem_image.1 hy
+    exact Finset.mem_range.2 (Nat.mod_lt _ hp)
+  have hc : (T.image (fun x => x % p)).card < (Finset.range p).card := by
+    have h1 : (T.image (fun x => x % p)).card ≤ T.card := Finset.card_image_le
+    rw [Finset.card_range]; omega
+  obtain ⟨y, hy1, hy2⟩ := Finset.exists_of_ssubset
+    (Finset.ssubset_iff_subset_ne.2 ⟨hsub, by intro hE; rw [hE] at hc; omega⟩)
+  exact ⟨y, Finset.mem_range.1 hy1, fun x hx hxy => hy2 (Finset.mem_image.2 ⟨x, hx, hxy⟩)⟩
+
+/-- Admissibility from a finite check at the primes up to `card`, plus pigeonhole above. -/
+theorem adm_of_small (T : Finset ℕ) (n : ℕ) (hcard : T.card = n)
+    (hsmall : ∀ q ∈ Finset.Ico 2 (n + 1), ∃ r ∈ Finset.range q, ∀ x ∈ T, x % q ≠ r) :
+    Adm T := by
   intro p hp
-  rcases Nat.lt_or_ge p B with h | h
-  · exact hsmall p hp h
-  · by_contra hcon
-    push_neg at hcon
-    have hsub : Finset.range p ⊆ T.image (fun x => x % p) := by
-      intro r hr
-      obtain ⟨x, hx, hxr⟩ := hcon r (Finset.mem_range.mp hr)
-      exact Finset.mem_image.mpr ⟨x, hx, hxr⟩
-    have h1 := Finset.card_le_card hsub
-    rw [Finset.card_range] at h1
-    have h2 : (T.image (fun x => x % p)).card ≤ T.card := Finset.card_image_le
-    omega
+  by_cases hle : p ≤ n
+  · obtain ⟨r, hr, hall⟩ := hsmall p (Finset.mem_Ico.2 ⟨hp.two_le, by omega⟩)
+    exact ⟨r, Finset.mem_range.1 hr, hall⟩
+  · exact omit_of_card_lt T p hp.pos (by omega)
 
-private lemma adm02 : ∀ p : ℕ, p.Prime → ∃ r : ℕ, r < p ∧ ∀ x ∈ ({0, 2} : Finset ℕ), x % p ≠ r := by
-  refine admissible_of_small (B := 3) (by decide) ?_
-  intro p hp hpB
-  have := hp.two_le
-  interval_cases p
-  · exact ⟨1, by norm_num, by decide⟩
+theorem adm2 : Adm ({0, 2} : Finset ℕ) := adm_of_small _ 2 (by decide) (by decide)
+theorem adm3 : Adm ({0, 2, 6} : Finset ℕ) := adm_of_small _ 3 (by decide) (by decide)
+theorem adm4 : Adm ({0, 2, 6, 8} : Finset ℕ) := adm_of_small _ 4 (by decide) (by decide)
+theorem adm5 : Adm ({0, 2, 6, 8, 12} : Finset ℕ) := adm_of_small _ 5 (by decide) (by decide)
 
-private lemma adm026 : ∀ p : ℕ, p.Prime →
-    ∃ r : ℕ, r < p ∧ ∀ x ∈ ({0, 2, 6} : Finset ℕ), x % p ≠ r := by
-  refine admissible_of_small (B := 4) (by decide) ?_
-  intro p hp hpB
-  have := hp.two_le
-  interval_cases p <;>
-    first
-      | (exfalso; revert hp; norm_num; done)
-      | (refine ⟨1, ?_, ?_⟩ <;> decide)
-
-private lemma adm0268 : ∀ p : ℕ, p.Prime →
-    ∃ r : ℕ, r < p ∧ ∀ x ∈ ({0, 2, 6, 8} : Finset ℕ), x % p ≠ r := by
-  refine admissible_of_small (B := 5) (by decide) ?_
-  intro p hp hpB
-  have := hp.two_le
-  interval_cases p <;>
-    first
-      | (exfalso; revert hp; norm_num; done)
-      | (refine ⟨1, ?_, ?_⟩ <;> decide)
-
-private lemma adm026812 : ∀ p : ℕ, p.Prime →
-    ∃ r : ℕ, r < p ∧ ∀ x ∈ ({0, 2, 6, 8, 12} : Finset ℕ), x % p ≠ r := by
-  refine admissible_of_small (B := 6) (by decide) ?_
-  intro p hp hpB
-  have := hp.two_le
-  interval_cases p <;>
-    first
-      | (exfalso; revert hp; norm_num; done)
-      | (refine ⟨1, ?_, ?_⟩ <;> decide)
-      | (refine ⟨4, ?_, ?_⟩ <;> decide)
+theorem not_adm_024 : ¬ Adm ({0, 2, 4} : Finset ℕ) := by
+  intro h
+  obtain ⟨r, hr, hall⟩ := h 3 Nat.prime_three
+  interval_cases r
+  · exact hall 0 (by decide) (by decide)
+  · exact hall 4 (by decide) (by decide)
+  · exact hall 2 (by decide) (by decide)
 
 theorem proof :
     (∀ (T : Finset ℕ) (lo d : ℕ), (∀ x ∈ T, lo ≤ x ∧ x ≤ lo + d) →
@@ -199,19 +168,13 @@ theorem proof :
         (∀ x ∈ ({0, 2, 6, 8, 12} : Finset ℕ), 0 ≤ x ∧ x ≤ 0 + 12) ∧
         ∀ p : ℕ, p.Prime → ∃ r : ℕ, r < p ∧ ∀ x ∈ ({0, 2, 6, 8, 12} : Finset ℕ), x % p ≠ r)
     ∧ ¬ (∀ p : ℕ, p.Prime → ∃ r : ℕ, r < p ∧ ∀ x ∈ ({0, 2, 4} : Finset ℕ), x % p ≠ r) := by
-  refine ⟨?_, ?_, ⟨by decide, by decide, adm02⟩, ⟨by decide, by decide, adm026⟩,
-    ⟨by decide, by decide, adm0268⟩, ⟨by decide, by decide, adm026812⟩, ?_⟩
-  · intro T lo d hbd hadm
-    exact ladder T.card T lo d rfl hbd (P_of_admissible hadm)
-  · intro T lo d hc hbd hadm
-    have := ladder T.card T lo d rfl hbd (P_of_admissible hadm)
-    rw [hc] at this
-    omega
-  · intro h
-    obtain ⟨r, hr, h3⟩ := h 3 Nat.prime_three
-    interval_cases r
-    · exact absurd (h3 0 (by decide)) (by decide)
-    · exact absurd (h3 4 (by decide)) (by decide)
-    · exact absurd (h3 2 (by decide)) (by decide)
+  refine ⟨fun T lo d hw hadm => ladder T.card T lo d rfl hw hadm, ?_,
+    ⟨by decide, by decide, adm2⟩, ⟨by decide, by decide, adm3⟩,
+    ⟨by decide, by decide, adm4⟩, ⟨by decide, by decide, adm5⟩, not_adm_024⟩
+  intro T lo d hc hw hadm
+  have h := ladder T.card T lo d rfl hw hadm
+  rw [hc] at h
+  have hf : f 50 = 146 := by unfold f; norm_num
+  omega
 
 end Submissions.AdmissibleTupleLadder.Ladder
