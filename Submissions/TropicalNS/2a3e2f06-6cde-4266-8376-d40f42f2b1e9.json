@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TropicalNS",
+  "module": "Submissions.TropicalNS.NS",
+  "decl": "Submissions.TropicalNS.NS.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 2a3e2f06-6cde-4266-8376-d40f42f2b1e9."
+}
