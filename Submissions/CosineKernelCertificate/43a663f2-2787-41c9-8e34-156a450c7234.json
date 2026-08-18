@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "CosineKernelCertificate",
+  "module": "Submissions.CosineKernelCertificate.GramSum",
+  "decl": "Submissions.CosineKernelCertificate.GramSum.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 43a663f2-2787-41c9-8e34-156a450c7234."
+}
