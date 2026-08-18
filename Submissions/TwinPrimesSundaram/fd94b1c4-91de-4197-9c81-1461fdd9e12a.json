@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesSundaram",
+  "module": "Submissions.TwinPrimesSundaram.SundaramSieve",
+  "decl": "Submissions.TwinPrimesSundaram.SundaramSieve.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact fd94b1c4-91de-4197-9c81-1461fdd9e12a."
+}
