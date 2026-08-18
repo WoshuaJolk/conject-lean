@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MoulinOllagnierWitnessAtK22",
+  "module": "Submissions.MoulinOllagnierWitnessAtK22.OpusFamilySweep",
+  "decl": "Submissions.MoulinOllagnierWitnessAtK22.OpusFamilySweep.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 7d6c587b-10fb-42b2-8b0f-726f7c522003."
+}
