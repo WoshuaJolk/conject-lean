@@ -59,12 +59,72 @@ def new_verdict(**kw) -> dict:
     return v
 
 
+NEXT_STEP = {
+    "ok": "Nothing to do.",
+    "restatement": (
+        "Your declaration's type is not definitionally the canonical one. Compare "
+        "`submitted_type` with `canonical_statement`: weakening a hypothesis or "
+        "changing the conclusion both land here."
+    ),
+    "shadowed_statement": (
+        "Your module redeclares a name the statement module already owns. Rename your "
+        "declaration, and never open `namespace Statements`."
+    ),
+    "provenance": (
+        "The declaration you named is not declared in the module you named. Check `decl` "
+        "and `module` in the manifest against the source you submitted."
+    ),
+    "forbidden_syntax": (
+        "The static scan rejected a construct before Lean ran. The detail names the line "
+        "and the construct; remove it. This is not negotiable by proving something else."
+    ),
+    "sorry": "The proof term reaches `sorryAx`. Something in the chain is still a hole.",
+    "native_decide": (
+        "`native_decide` trusts the compiler, not the kernel. Replace it with `decide` "
+        "or a proof."
+    ),
+    "disallowed_axiom": (
+        "The proof depends on an axiom outside the trusted three. The detail lists the "
+        "extras."
+    ),
+    "build_failed": "The submission does not compile. `output` carries the compiler error.",
+    "audit_failed": "The axiom audit did not elaborate. `output` carries the error.",
+    "bad_manifest": "The manifest is malformed. The detail says which field.",
+    "unknown_statement": "No statement file by that label. Check `verifier_statement_label`.",
+    "missing_source": "No source at the path the module name implies.",
+    "statement_id_mismatch": "The manifest names a different statement than the dispatch did.",
+    "timeout": (
+        "A step exceeded its budget. The detail names the step. If it was the build, the "
+        "proof is too slow, not wrong."
+    ),
+    "verifier_error": "The verifier crashed. Not your fault; report it rather than resubmitting.",
+    "run_cancelled": (
+        "Nothing was verified and nothing is known about your proof. The run was cancelled "
+        "before the checks ran."
+    ),
+    "invalid_witness": "The checker rejected the witness. The detail carries its reason.",
+    "checker_error": "The checker crashed. Infrastructure, not your certificate.",
+}
+
+# Reasons that say nothing about the submission, so a resubmission is the right move.
+NOT_ACTIONABLE = {"verifier_error", "checker_error", "run_cancelled"}
+
+
+def advise(verdict: dict) -> dict:
+    """Attach what to do next. Derived from `reason`, never authored per artifact."""
+    reason = verdict.get("reason", "")
+    verdict.setdefault("next", NEXT_STEP.get(reason, ""))
+    verdict.setdefault("agent_actionable", reason not in NOT_ACTIONABLE)
+    return verdict
+
+
 def finish(verdict: dict, out_path: str | None) -> int:
     """Write the verdict, print it, and return the process exit code.
 
     Exit 0 for green, 1 for red. A crash in the driver itself must never reach here;
     callers wrap `main` so that an unexpected exception still produces a red verdict.
     """
+    advise(verdict)
     text = json.dumps(verdict, indent=2, sort_keys=False)
     if out_path:
         p = pathlib.Path(out_path)
@@ -74,8 +134,17 @@ def finish(verdict: dict, out_path: str | None) -> int:
     return 0 if verdict["verdict"] == "green" else 1
 
 
-def record(verdict: dict, name: str, ok: bool, detail: str = "") -> bool:
-    verdict["checks"][name] = {"ok": ok, "detail": detail}
+def record(verdict: dict, name: str, ok: bool, detail: str = "", output: str = "") -> bool:
+    """`detail` is the one-line summary. `output` is everything the tool said.
+
+    Keeping only the summary is how a type mismatch reached agents as the words
+    "Type mismatch" and nothing else: Lean puts the two types on indented
+    continuation lines, which carry no "error:" and were filtered out.
+    """
+    entry = {"ok": ok, "detail": detail}
+    if output:
+        entry["output"] = output
+    verdict["checks"][name] = entry
     return ok
 
 

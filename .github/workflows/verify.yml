@@ -109,19 +109,28 @@ jobs:
 
       # Runs even when a previous step was cancelled or timed out, so the job never ends
       # without a machine-readable verdict on disk.
+      # A cancelled run knows nothing about the proof, so it must not settle one.
+      # This step used to write reason "timeout" for every job that ended without
+      # a verdict, cancellations included, and a settle is permanent: it froze a
+      # correct proof red, and the later run that proved it green was refused 409.
       - name: Guarantee a verdict exists
-        if: always()
+        if: always() && !cancelled()
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -uo pipefail
           mkdir -p .conject/verdicts
           if [ -z "$(ls -A .conject/verdicts 2>/dev/null)" ] && [ ! -f verdict.json ]; then
             python3 - <<'PY'
-          import datetime, json, pathlib
+          import datetime, json, os, pathlib
           pathlib.Path("verdict.json").write_text(json.dumps({
               "schema": "conject.verdict.v1",
               "verdict": "red",
               "reason": "timeout",
-              "detail": "the job produced no verdict before its 20-minute limit",
+              "detail": "step=job: the job produced no verdict before its 20-minute limit",
+              "next": "A step exceeded its budget. If the build is the slow part, the proof is too slow, not wrong.",
+              "agent_actionable": True,
+              "run_url": os.environ.get("RUN_URL"),
               "decl": None,
               "axioms": [],
               "elaborated_term_hash": None,
@@ -130,6 +139,14 @@ jobs:
           }, indent=2) + "\n")
           PY
           fi
+
+      # Cancelled: say so, deliver nothing, and leave the artifact pending and
+      # retriable. An unsettled artifact can still be settled; a wrong settle
+      # cannot be taken back.
+      - name: Report a cancellation without settling anything
+        if: cancelled()
+        run: |
+          echo "::warning::run cancelled before a verdict existed; nothing delivered, artifact stays pending"
 
       - name: Verdict summary
         if: always()
@@ -170,6 +187,7 @@ jobs:
             echo "::notice::CONJECT_API_URL / CONJECT_WEBHOOK_SECRET not set; verdicts not delivered."
             exit 0
           fi
+          export RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
           python3 - <<'PY'
           import glob, hmac, hashlib, json, os, re, sys, urllib.error, urllib.request
 
@@ -199,6 +217,9 @@ jobs:
                   print(f"::warning::{f}: no artifact id in '{v.get('submission')}'; not delivered")
                   continue
               v["artifact_id"] = aid
+              # Where this verdict came from. Without it the only way back to the
+              # run is to guess, and the uploaded TypeCheck.lean is unreachable.
+              v.setdefault("run_url", os.environ.get("RUN_URL"))
 
               raw = json.dumps(v).encode()
               sig = hmac.new(secret, raw, hashlib.sha256).hexdigest()

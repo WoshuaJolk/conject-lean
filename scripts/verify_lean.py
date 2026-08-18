@@ -53,6 +53,10 @@ import Verify.Guard
    Mathlib or another submission. -/
 #conject_provenance {decl} "{submission_module}"
 
+/- The canonical type, echoed so a failure can say what was expected without the
+   agent installing Lean to find out. -/
+#print {statement_const}
+
 /- THE anti-restatement check. -/
 example : {statement_const} := @{decl}
 """
@@ -75,14 +79,58 @@ def module_to_path(mod: str) -> pathlib.Path:
     return REPO_ROOT / (mod.replace(".", "/") + ".lean")
 
 
+def repo_rel(s: str) -> str:
+    """Runner-absolute paths name a machine that no longer exists by the time an
+    agent reads the verdict."""
+    return s.replace(str(REPO_ROOT) + "/", "").replace(str(REPO_ROOT), "")
+
+
 def lean_errors(proc: subprocess.CompletedProcess) -> str:
-    """Lean reports diagnostics on stdout; keep only genuine errors."""
+    """One-line summary: the diagnostic headers, without their bodies."""
     lines = [
         ln
         for ln in (proc.stdout + "\n" + proc.stderr).splitlines()
         if "error:" in ln or ln.startswith("CONJECT_ERROR")
     ]
-    return "\n".join(lines)
+    return repo_rel("\n".join(lines))
+
+
+def lean_output(proc: subprocess.CompletedProcess) -> str:
+    """Everything Lean said, headers and bodies both.
+
+    A type mismatch puts the two types on indented continuation lines that carry
+    no "error:", so `lean_errors` drops precisely the part that answers the
+    question. This is the field an agent should read first.
+    """
+    return repo_rel(tail((proc.stdout + "\n" + proc.stderr).strip(), 8000))
+
+
+def between(text: str, start: str, end: str) -> str:
+    """The block after `start` and before `end`, dedented. \"\" when absent."""
+    if start not in text:
+        return ""
+    body = text.split(start, 1)[1]
+    if end and end in body:
+        body = body.split(end, 1)[0]
+    lines = [ln.strip() for ln in body.strip().splitlines()]
+    return " ".join(ln for ln in lines if ln)
+
+
+def printed_type(out: str, const: str) -> str:
+    """The body of `#print <const>`, which Lean writes as `def <const> : Prop :=`
+    followed by the proposition."""
+    for marker in (f"def {const} : Prop :=", f"def {const} :="):
+        if marker in out:
+            body = out.split(marker, 1)[1]
+            keep: list[str] = []
+            for ln in body.splitlines():
+                # A new diagnostic or a new declaration ends the printed body.
+                if keep and (not ln.strip() or ".lean:" in ln or ln.startswith(("def ", "theorem ", "@["))):
+                    break
+                if ln.strip():
+                    keep.append(ln.strip())
+            return " ".join(keep)
+    return ""
 
 
 def main() -> int:
@@ -169,11 +217,12 @@ def main() -> int:
                    timeout=remaining())
     except subprocess.TimeoutExpired:
         record(verdict, "build", False, "timeout")
-        return finish(fail(verdict, "timeout", "lake build exceeded the wall budget"), args.out)
+        return finish(fail(verdict, "timeout", "step=build: lake build exceeded the wall budget"), args.out)
     verdict["timings_sec"]["build"] = round(time.monotonic() - t0, 2)
     if proc.returncode != 0:
-        d = tail(proc.stdout + proc.stderr)
-        record(verdict, "build", False, d)
+        full = lean_output(proc)
+        d = tail(lean_errors(proc) or full)
+        record(verdict, "build", False, d, output=full)
         return finish(fail(verdict, "build_failed", d), args.out)
     record(verdict, "build", True)
 
@@ -193,11 +242,20 @@ def main() -> int:
         proc = run(["lake", "env", "lean", str(tc_file)], timeout=remaining())
     except subprocess.TimeoutExpired:
         record(verdict, "anti_restatement", False, "timeout")
-        return finish(fail(verdict, "timeout", "anti-restatement check timed out"), args.out)
+        return finish(fail(verdict, "timeout", "step=anti_restatement: the check exceeded the wall budget"), args.out)
     verdict["timings_sec"]["anti_restatement"] = round(time.monotonic() - t0, 2)
+    full = lean_output(proc)
+    canonical = printed_type(full, statement_const)
+    if canonical:
+        verdict["canonical_statement"] = canonical
     if proc.returncode != 0:
-        d = tail(lean_errors(proc) or proc.stdout + proc.stderr)
-        record(verdict, "anti_restatement", False, d)
+        d = tail(lean_errors(proc) or full)
+        record(verdict, "anti_restatement", False, d, output=full)
+        # Lean names both sides of a mismatch; hand them over rather than making
+        # the agent rebuild Mathlib to read them.
+        submitted = between(full, "has type", "but is expected to have type")
+        if submitted:
+            verdict["submitted_type"] = submitted
         if "environment already contains" in d:
             reason = "shadowed_statement"
         elif "CONJECT_ERROR: provenance" in proc.stdout:
@@ -205,7 +263,7 @@ def main() -> int:
         else:
             reason = "restatement"
         fail(verdict, reason,
-             f"`example : {statement_const} := @{decl}` did not elaborate: {d}")
+             f"`example : {statement_const} := @{decl}` did not elaborate")
     else:
         record(verdict, "anti_restatement", True,
                f"example : {statement_const} := @{decl}")
@@ -229,7 +287,7 @@ def main() -> int:
         proc = run(["lake", "env", "lean", str(audit_file)], timeout=remaining())
     except subprocess.TimeoutExpired:
         record(verdict, "axioms", False, "timeout")
-        return finish(fail(verdict, "timeout", "axiom audit timed out"), args.out)
+        return finish(fail(verdict, "timeout", "step=axiom_audit: the audit exceeded the wall budget"), args.out)
     verdict["timings_sec"]["audit"] = round(time.monotonic() - t0, 2)
 
     print_axioms_line = next(
@@ -241,9 +299,10 @@ def main() -> int:
 
     sub_json = sub_prefix.with_suffix(".json")
     if proc.returncode != 0 or not sub_json.exists():
-        d = tail(lean_errors(proc) or proc.stdout + proc.stderr)
-        record(verdict, "axioms", False, d)
-        record(verdict, "no_new_axioms", False, d)
+        full = lean_output(proc)
+        d = tail(lean_errors(proc) or full)
+        record(verdict, "axioms", False, d, output=full)
+        record(verdict, "no_new_axioms", False, d, output=full)
         return finish(fail(verdict, "audit_failed", d), args.out)
     record(verdict, "no_new_axioms", True)
 
