@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MarginalRouteK2Ceiling",
+  "module": "Submissions.MarginalRouteK2Ceiling.NoSolution",
+  "decl": "Submissions.MarginalRouteK2Ceiling.NoSolution.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "refutes": "TwinPrimesGEHMarginalRoute",
+  "note": "Submitted through the Jig API as artifact 0f68f3c1-43a0-4ac9-a10e-c6d03d7f5c3b."
+}
