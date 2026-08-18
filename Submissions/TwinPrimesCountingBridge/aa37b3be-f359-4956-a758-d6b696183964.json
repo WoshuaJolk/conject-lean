@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesCountingBridge",
+  "module": "Submissions.TwinPrimesCountingBridge.CountingEquiv",
+  "decl": "Submissions.TwinPrimesCountingBridge.CountingEquiv.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact aa37b3be-f359-4956-a758-d6b696183964."
+}
