@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyUpperTwoPowD",
+  "module": "Submissions.PlyUpperTwoPowD.RateTwo",
+  "decl": "Submissions.PlyUpperTwoPowD.RateTwo.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 80f4e025-bc00-4d4b-819f-8cf49fc86257."
+}
