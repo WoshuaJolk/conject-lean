@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausBaseTwo",
+  "module": "Submissions.ErdosStrausBaseTwo.JigPoseSmoke",
+  "decl": "Submissions.ErdosStrausBaseTwo.JigPoseSmoke.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 08ddfbdc-c4f1-4e7c-94e2-7141ce4d2f0f."
+}
