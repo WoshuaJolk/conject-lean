@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "GroupInvariantFGKFromOrbitProduct",
+  "module": "Submissions.GroupInvariantFGKFromOrbitProduct.Wiring",
+  "decl": "Submissions.GroupInvariantFGKFromOrbitProduct.Wiring.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 9fa13555-69e9-4412-a3a5-6617b1a13bee."
+}
