@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesSmallCases",
+  "module": "Submissions.TwinPrimesSmallCases.MalloryWeakened",
+  "decl": "Submissions.TwinPrimesSmallCases.MalloryWeakened.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact 8f3913e1-1e5e-4736-8212-0380016fb8e5."
+}
