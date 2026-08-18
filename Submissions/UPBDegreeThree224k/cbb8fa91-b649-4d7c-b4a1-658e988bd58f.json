@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UPBDegreeThree224k",
+  "module": "Submissions.UPBDegreeThree224k.MalloryWeakened",
+  "decl": "Submissions.UPBDegreeThree224k.MalloryWeakened.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact cbb8fa91-b649-4d7c-b4a1-658e988bd58f."
+}
