@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "OVConj1Refuted",
+  "module": "Submissions.OVConj1Refuted.WoshuaJolk",
+  "decl": "Submissions.OVConj1Refuted.WoshuaJolk.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "refutes": "KWiseOddtownConj1",
+  "note": "Submitted through the Jig API as artifact ebe2f3e7-0506-4735-9b7e-f61b4453ea00."
+}
