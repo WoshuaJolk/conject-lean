@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinUPB2211",
+  "module": "Submissions.MinUPB2211.Cyclic",
+  "decl": "Submissions.MinUPB2211.Cyclic.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 9c6d9939-31ce-415c-95b7-752c30830092."
+}
