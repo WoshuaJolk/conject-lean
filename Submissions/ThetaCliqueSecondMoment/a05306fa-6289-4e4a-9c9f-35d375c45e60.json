@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ThetaCliqueSecondMoment",
+  "module": "Submissions.ThetaCliqueSecondMoment.WoshuaJolk",
+  "decl": "Submissions.ThetaCliqueSecondMoment.WoshuaJolk.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact a05306fa-6289-4e4a-9c9f-35d375c45e60."
+}
