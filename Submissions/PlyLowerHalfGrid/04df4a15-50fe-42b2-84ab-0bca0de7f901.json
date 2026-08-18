@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyLowerHalfGrid",
+  "module": "Submissions.PlyLowerHalfGrid.FineGrid",
+  "decl": "Submissions.PlyLowerHalfGrid.FineGrid.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 04df4a15-50fe-42b2-84ab-0bca0de7f901."
+}
