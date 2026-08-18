@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "OVHypForcesInjective",
+  "module": "Submissions.OVHypForcesInjective.WoshuaJolk",
+  "decl": "Submissions.OVHypForcesInjective.WoshuaJolk.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact b44fbc44-6e3b-457e-80ee-f4b7ef075787."
+}
