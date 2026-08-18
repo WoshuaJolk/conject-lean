@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "FranklUnionClosed",
+  "module": "Submissions.FranklUnionClosed.MalloryRed",
+  "decl": "Submissions.FranklUnionClosed.MalloryRed.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 0e8ef164-d57b-4047-a2ca-c59e4b064c6c."
+}
