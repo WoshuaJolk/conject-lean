@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ExpLatticeLevelReduction",
+  "module": "Submissions.ExpLatticeLevelReduction.Slice",
+  "decl": "Submissions.ExpLatticeLevelReduction.Slice.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 13015b2f-a89f-488f-a8d3-91eaa66cf970."
+}
