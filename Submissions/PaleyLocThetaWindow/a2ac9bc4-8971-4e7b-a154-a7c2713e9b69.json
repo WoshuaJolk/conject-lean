@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PaleyLocThetaWindow",
+  "module": "Submissions.PaleyLocThetaWindow.ConferenceMatrixWindow",
+  "decl": "Submissions.PaleyLocThetaWindow.ConferenceMatrixWindow.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact a2ac9bc4-8971-4e7b-a154-a7c2713e9b69."
+}
