@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PaleyLocSecondMomentBound",
+  "module": "Submissions.PaleyLocSecondMomentBound.WoshuaJolk",
+  "decl": "Submissions.PaleyLocSecondMomentBound.WoshuaJolk.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 897a0932-17d7-4b78-affb-65ff3dbbd1f3."
+}
