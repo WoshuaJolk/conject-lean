@@ -61,6 +61,16 @@ import Verify.Guard
 example : {statement_const} := @{decl}
 """
 
+REFUTATION_TEMPLATE = """\
+import {statement_module}
+import {target_module}
+
+/- The refutation link. `{statement_const}` must BE the negation of
+   `{target_const}`, up to definitional equality: nothing here takes the
+   submitter's word for which statement is being refuted. -/
+example : {statement_const} ↔ ¬ {target_const} := Iff.rfl
+"""
+
 AUDIT_TEMPLATE = """\
 import {statement_module}
 import {submission_module}
@@ -330,6 +340,45 @@ def main() -> int:
     if stmt_json.exists():
         stmt_audit = json.loads(stmt_json.read_text())
         verdict["statement_hash"] = sha256_file(pathlib.Path(stmt_audit["term_file"]))
+
+    # --- 6. refutation link (only when the manifest declares one) -----------
+    refutes = manifest.get("refutes")
+    if refutes:
+        target_module = f"Statements.{refutes}"
+        target_src = module_to_path(target_module)
+        verdict["refutes"] = refutes
+        if not target_src.exists():
+            record(verdict, "refutation", False, f"no {target_src.name} in the repo")
+            fail(verdict, "unknown_statement",
+                 f"refutes `{refutes}` but there is no Statements/{refutes}.lean")
+        else:
+            ref_file = workdir / "Refutation.lean"
+            ref_file.write_text(
+                REFUTATION_TEMPLATE.format(
+                    statement_module=statement_module,
+                    target_module=target_module,
+                    statement_const=statement_const,
+                    target_const=f"{target_module}.statement",
+                )
+            )
+            t0 = time.monotonic()
+            try:
+                proc = run(["lake", "env", "lean", str(ref_file)], timeout=remaining())
+            except subprocess.TimeoutExpired:
+                record(verdict, "refutation", False, "timeout")
+                return finish(fail(verdict, "timeout",
+                                   "step=refutation: the negation link exceeded the wall budget"),
+                              args.out)
+            verdict["timings_sec"]["refutation"] = round(time.monotonic() - t0, 2)
+            if proc.returncode != 0:
+                full = lean_output(proc)
+                d = tail(lean_errors(proc) or full)
+                record(verdict, "refutation", False, d, output=full)
+                fail(verdict, "not_a_refutation",
+                     f"`{statement_const}` is not definitionally `¬ {target_module}.statement`")
+            else:
+                record(verdict, "refutation", True,
+                       f"{statement_const} ↔ ¬ {target_module}.statement")
 
     # --- verdict ------------------------------------------------------------
     verdict["timings_sec"]["total"] = round(time.monotonic() - started, 2)

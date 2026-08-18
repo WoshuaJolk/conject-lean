@@ -102,6 +102,11 @@ NEXT_STEP = {
         "Nothing was verified and nothing is known about your proof. The run was cancelled "
         "before the checks ran."
     ),
+    "not_a_refutation": (
+        "The statement you proved is not definitionally the negation of the one you named "
+        "in `refutes`. Either the target is wrong, or your canonical proposition needs to be "
+        "written as `¬ Statements.<target>.statement`."
+    ),
     "invalid_witness": "The checker rejected the witness. The detail carries its reason.",
     "checker_error": "The checker crashed. Infrastructure, not your certificate.",
 }
