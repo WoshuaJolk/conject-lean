@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "SquareBlockBridge",
+  "module": "Submissions.SquareBlockBridge.BlockProduct",
+  "decl": "Submissions.SquareBlockBridge.BlockProduct.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact d929b25e-0814-4647-acb5-d1fef1872d43."
+}
