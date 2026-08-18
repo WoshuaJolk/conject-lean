@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyUpperTwoPowSqrt",
+  "module": "Submissions.PlyUpperTwoPowSqrt.CylinderCap",
+  "decl": "Submissions.PlyUpperTwoPowSqrt.CylinderCap.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 77ac4c3f-c1c0-429c-b970-7e4ab77f10be."
+}
