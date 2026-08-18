@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ExpLattice3Base2At26",
+  "module": "Submissions.ExpLattice3Base2At26.Cert26",
+  "decl": "Submissions.ExpLattice3Base2At26.Cert26.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 52c47a24-d4ae-445f-9ba6-08162ad09d05."
+}
