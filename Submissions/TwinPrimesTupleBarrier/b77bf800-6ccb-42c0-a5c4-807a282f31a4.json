@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesTupleBarrier",
+  "module": "Submissions.TwinPrimesTupleBarrier.MustFailControl",
+  "decl": "Submissions.TwinPrimesTupleBarrier.MustFailControl.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact b77bf800-6ccb-42c0-a5c4-807a282f31a4."
+}
