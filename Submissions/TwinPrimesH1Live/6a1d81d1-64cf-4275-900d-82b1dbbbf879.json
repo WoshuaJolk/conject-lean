@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesH1Live",
+  "module": "Submissions.TwinPrimesH1Live.LiminfAttained",
+  "decl": "Submissions.TwinPrimesH1Live.LiminfAttained.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 6a1d81d1-64cf-4275-900d-82b1dbbbf879."
+}
