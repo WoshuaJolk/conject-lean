@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "PlyLargeNeighboursFew",
+  "module": "Submissions.PlyLargeNeighboursFew.WeakerBoundProbe",
+  "decl": "Submissions.PlyLargeNeighboursFew.WeakerBoundProbe.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact 836b09ce-aa40-4d6b-9c10-51df03539215."
+}
