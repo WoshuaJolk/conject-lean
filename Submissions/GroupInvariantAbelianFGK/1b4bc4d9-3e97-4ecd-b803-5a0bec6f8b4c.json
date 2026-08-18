@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "GroupInvariantAbelianFGK",
+  "module": "Submissions.GroupInvariantAbelianFGK.AbelianCosetBridge",
+  "decl": "Submissions.GroupInvariantAbelianFGK.AbelianCosetBridge.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 1b4bc4d9-3e97-4ecd-b803-5a0bec6f8b4c."
+}
