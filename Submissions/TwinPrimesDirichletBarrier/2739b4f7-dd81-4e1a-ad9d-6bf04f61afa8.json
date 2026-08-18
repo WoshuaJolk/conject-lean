@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TwinPrimesDirichletBarrier",
+  "module": "Submissions.TwinPrimesDirichletBarrier.DirichletCertificate",
+  "decl": "Submissions.TwinPrimesDirichletBarrier.DirichletCertificate.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 2739b4f7-dd81-4e1a-ad9d-6bf04f61afa8."
+}
