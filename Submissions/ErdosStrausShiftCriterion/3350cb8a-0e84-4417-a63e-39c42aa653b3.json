@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausShiftCriterion",
+  "module": "Submissions.ErdosStrausShiftCriterion.ShiftCriterion",
+  "decl": "Submissions.ErdosStrausShiftCriterion.ShiftCriterion.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 3350cb8a-0e84-4417-a63e-39c42aa653b3."
+}
