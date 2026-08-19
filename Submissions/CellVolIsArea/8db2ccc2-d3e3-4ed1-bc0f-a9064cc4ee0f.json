@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "CellVolIsArea",
+  "module": "Submissions.CellVolIsArea.Area",
+  "decl": "Submissions.CellVolIsArea.Area.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 8db2ccc2-d3e3-4ed1-bc0f-a9064cc4ee0f."
+}
