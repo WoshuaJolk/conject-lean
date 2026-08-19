@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausOutside1Mod24",
+  "module": "Submissions.ErdosStrausOutside1Mod24.Outside1Mod24",
+  "decl": "Submissions.ErdosStrausOutside1Mod24.Outside1Mod24.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact bcea13fd-326a-453e-a334-f3a858a6c31b."
+}
