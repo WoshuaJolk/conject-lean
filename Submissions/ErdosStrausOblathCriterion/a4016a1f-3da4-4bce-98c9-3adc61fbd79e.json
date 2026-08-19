@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausOblathCriterion",
+  "module": "Submissions.ErdosStrausOblathCriterion.OblathCriterion",
+  "decl": "Submissions.ErdosStrausOblathCriterion.OblathCriterion.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact a4016a1f-3da4-4bce-98c9-3adc61fbd79e."
+}
