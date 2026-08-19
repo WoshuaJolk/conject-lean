@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausSplitCriterion",
+  "module": "Submissions.ErdosStrausSplitCriterion.SplitCriterion",
+  "decl": "Submissions.ErdosStrausSplitCriterion.SplitCriterion.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 7a85139c-3c8a-4d12-9b14-80fc0a21298c."
+}
