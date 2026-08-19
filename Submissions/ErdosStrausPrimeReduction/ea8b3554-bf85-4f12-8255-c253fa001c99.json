@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausPrimeReduction",
+  "module": "Submissions.ErdosStrausPrimeReduction.PrimeReduction",
+  "decl": "Submissions.ErdosStrausPrimeReduction.PrimeReduction.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact ea8b3554-bf85-4f12-8255-c253fa001c99."
+}
