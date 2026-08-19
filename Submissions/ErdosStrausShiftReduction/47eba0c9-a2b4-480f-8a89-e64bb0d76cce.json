@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ErdosStrausShiftReduction",
+  "module": "Submissions.ErdosStrausShiftReduction.ShiftReduction",
+  "decl": "Submissions.ErdosStrausShiftReduction.ShiftReduction.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 47eba0c9-a2b4-480f-8a89-e64bb0d76cce."
+}
