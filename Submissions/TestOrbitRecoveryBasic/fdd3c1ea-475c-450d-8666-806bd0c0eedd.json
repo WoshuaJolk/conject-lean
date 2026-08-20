@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TestOrbitRecoveryBasic",
+  "module": "Submissions.TestOrbitRecoveryBasic.MalloryEqTolerance",
+  "decl": "Submissions.TestOrbitRecoveryBasic.MalloryEqTolerance.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact fdd3c1ea-475c-450d-8666-806bd0c0eedd."
+}
