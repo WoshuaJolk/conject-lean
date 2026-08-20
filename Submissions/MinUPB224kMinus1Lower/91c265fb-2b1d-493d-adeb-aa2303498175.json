@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinUPB224kMinus1Lower",
+  "module": "Submissions.MinUPB224kMinus1Lower.WeakControl",
+  "decl": "Submissions.MinUPB224kMinus1Lower.WeakControl.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact 91c265fb-2b1d-493d-adeb-aa2303498175."
+}
