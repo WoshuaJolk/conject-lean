@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TestOrbitRecoveryBasic",
+  "module": "Submissions.TestOrbitRecoveryBasic.Wolk",
+  "decl": "Submissions.TestOrbitRecoveryBasic.Wolk.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact c2306f6c-ca96-4e03-918a-47f473c2e73f."
+}
