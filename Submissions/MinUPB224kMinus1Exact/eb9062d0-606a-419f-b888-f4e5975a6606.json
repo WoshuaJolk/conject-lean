@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinUPB224kMinus1Exact",
+  "module": "Submissions.MinUPB224kMinus1Exact.Composed",
+  "decl": "Submissions.MinUPB224kMinus1Exact.Composed.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact eb9062d0-606a-419f-b888-f4e5975a6606."
+}
