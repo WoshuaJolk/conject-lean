@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UPBProperSpan344",
+  "module": "Submissions.UPBProperSpan344.SmokeGreen",
+  "decl": "Submissions.UPBProperSpan344.SmokeGreen.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 44887245-748a-4613-a181-5e6c990b8d8f."
+}
