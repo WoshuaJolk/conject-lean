@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinUPB344Lower",
+  "module": "Submissions.MinUPB344Lower.Parity",
+  "decl": "Submissions.MinUPB344Lower.Parity.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 2591540c-97ca-4a6c-b754-14a98462d992."
+}
