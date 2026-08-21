@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UPBFromDegreeBudget",
+  "module": "Submissions.UPBFromDegreeBudget.Budget",
+  "decl": "Submissions.UPBFromDegreeBudget.Budget.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 254b6c37-b709-4b71-aa63-b15e19e3c921."
+}
