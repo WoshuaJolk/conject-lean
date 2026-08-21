@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "GenPosUPBTrivialCeiling",
+  "module": "Submissions.GenPosUPBTrivialCeiling.Control",
+  "decl": "Submissions.GenPosUPBTrivialCeiling.Control.proof",
+  "author": "woshuajolk",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact 744555fe-dc64-4859-8bd4-39b4a8f175ad."
+}
