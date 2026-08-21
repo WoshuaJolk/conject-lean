@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "SpanningOrthRep4C10",
+  "module": "Submissions.SpanningOrthRep4C10.Circ10",
+  "decl": "Submissions.SpanningOrthRep4C10.Circ10.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact ba9ee80c-3bb3-42af-b3a3-f4ce2dc3f974."
+}
