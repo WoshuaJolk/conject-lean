@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "GenPosUPB344Dead",
+  "module": "Submissions.GenPosUPB344Dead.GenPosCount",
+  "decl": "Submissions.GenPosUPB344Dead.GenPosCount.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact e0345538-ebfc-4d4e-8cf5-5e82d3ef327e."
+}
