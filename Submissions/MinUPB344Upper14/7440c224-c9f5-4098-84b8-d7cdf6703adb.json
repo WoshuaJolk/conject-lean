@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinUPB344Upper14",
+  "module": "Submissions.MinUPB344Upper14.ExplicitWitness",
+  "decl": "Submissions.MinUPB344Upper14.ExplicitWitness.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 7440c224-c9f5-4098-84b8-d7cdf6703adb."
+}
