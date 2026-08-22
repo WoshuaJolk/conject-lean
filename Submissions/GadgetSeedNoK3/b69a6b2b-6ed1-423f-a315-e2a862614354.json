@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "GadgetSeedNoK3",
+  "module": "Submissions.GadgetSeedNoK3.NoK3",
+  "decl": "Submissions.GadgetSeedNoK3.NoK3.target",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact b69a6b2b-6ed1-423f-a315-e2a862614354."
+}
