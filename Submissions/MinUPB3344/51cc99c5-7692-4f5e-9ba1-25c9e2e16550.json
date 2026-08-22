@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinUPB3344",
+  "module": "Submissions.MinUPB3344.Gauss",
+  "decl": "Submissions.MinUPB3344.Gauss.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 51cc99c5-7692-4f5e-9ba1-25c9e2e16550."
+}
