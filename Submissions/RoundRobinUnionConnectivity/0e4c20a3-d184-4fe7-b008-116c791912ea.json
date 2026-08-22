@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "RoundRobinUnionConnectivity",
+  "module": "Submissions.RoundRobinUnionConnectivity.RoundRobinConn",
+  "decl": "Submissions.RoundRobinUnionConnectivity.RoundRobinConn.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 0e4c20a3-d184-4fe7-b008-116c791912ea."
+}
