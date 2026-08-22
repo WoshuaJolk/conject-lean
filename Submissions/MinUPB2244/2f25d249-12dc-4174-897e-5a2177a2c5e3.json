@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinUPB2244",
+  "module": "Submissions.MinUPB2244.Circulant",
+  "decl": "Submissions.MinUPB2244.Circulant.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 2f25d249-12dc-4174-897e-5a2177a2c5e3."
+}
