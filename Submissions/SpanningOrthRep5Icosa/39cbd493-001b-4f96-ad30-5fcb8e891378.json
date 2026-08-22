@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "SpanningOrthRep5Icosa",
+  "module": "Submissions.SpanningOrthRep5Icosa.Icosa",
+  "decl": "Submissions.SpanningOrthRep5Icosa.Icosa.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 39cbd493-001b-4f96-ad30-5fcb8e891378."
+}
