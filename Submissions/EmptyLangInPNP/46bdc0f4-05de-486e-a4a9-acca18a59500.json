@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "EmptyLangInPNP",
+  "module": "Submissions.EmptyLangInPNP.EmptyWitness",
+  "decl": "Submissions.EmptyLangInPNP.EmptyWitness.proof",
+  "author": "alexolpe",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 46bdc0f4-05de-486e-a4a9-acca18a59500."
+}
