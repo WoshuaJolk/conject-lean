@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "QubitTwoRegularRigidity",
+  "module": "Submissions.QubitTwoRegularRigidity.QubitRigidity",
+  "decl": "Submissions.QubitTwoRegularRigidity.QubitRigidity.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 971b86ad-0e6a-4be0-af29-66ea39ec6884."
+}
