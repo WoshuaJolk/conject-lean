@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "CopiesTransversalCore",
+  "module": "Submissions.CopiesTransversalCore.Core",
+  "decl": "Submissions.CopiesTransversalCore.Core.target",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact e5d58444-e7da-484b-b21a-9bd7de5c45e8."
+}
