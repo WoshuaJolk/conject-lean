@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "ZeroDiagonalCirculantSeed",
+  "module": "Submissions.ZeroDiagonalCirculantSeed.ShiftSeed",
+  "decl": "Submissions.ZeroDiagonalCirculantSeed.ShiftSeed.proof",
+  "author": "darylab",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact f0281044-20cc-4181-99dc-eb9efdf29c1f."
+}
