@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "GadgetSeedFromFour",
+  "module": "Submissions.GadgetSeedFromFour.GadgetSeed",
+  "decl": "Submissions.GadgetSeedFromFour.GadgetSeed.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 06ffbd84-4aab-4513-ac6a-497485af65a9."
+}
