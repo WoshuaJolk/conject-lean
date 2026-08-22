@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "SpanningOrthRep4Copies20",
+  "module": "Submissions.SpanningOrthRep4Copies20.Copies",
+  "decl": "Submissions.SpanningOrthRep4Copies20.Copies.proof",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 6fc137b0-2f95-4ad8-8ca9-822e0303b97a."
+}
