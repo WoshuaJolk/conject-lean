@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "VandermondeCliqueRows",
+  "module": "Submissions.VandermondeCliqueRows.Rows",
+  "decl": "Submissions.VandermondeCliqueRows.Rows.target",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact f32cce46-e822-44cd-ab11-53977231f69c."
+}
