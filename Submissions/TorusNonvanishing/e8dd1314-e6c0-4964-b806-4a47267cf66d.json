@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "TorusNonvanishing",
+  "module": "Submissions.TorusNonvanishing.Torus",
+  "decl": "Submissions.TorusNonvanishing.Torus.target",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact e8dd1314-e6c0-4964-b806-4a47267cf66d."
+}
