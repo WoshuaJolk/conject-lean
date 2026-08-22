@@ -1,0 +1,11 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "EmptyLangInPNP",
+  "module": "Submissions.EmptyLangInPNP.TrivialRestatement",
+  "decl": "Submissions.EmptyLangInPNP.TrivialRestatement.proof",
+  "author": "alexolpe",
+  "expect": "red",
+  "expect_reason": "restatement",
+  "note": "Submitted through the Jig API as artifact a83f676e-2af3-4a9b-91e1-f76f2f090e39."
+}
