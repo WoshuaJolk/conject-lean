@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "MinorSplitPhaseTransversal",
+  "module": "Submissions.MinorSplitPhaseTransversal.Phase",
+  "decl": "Submissions.MinorSplitPhaseTransversal.Phase.target",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 6c6b08d9-e0b8-4914-a6de-a66a2be06926."
+}
