@@ -1,0 +1,10 @@
+{
+  "schema": "conject.submission.v1",
+  "kind": "lean",
+  "statement_id": "UniformSecondBlockPlacement",
+  "module": "Submissions.UniformSecondBlockPlacement.Phase",
+  "decl": "Submissions.UniformSecondBlockPlacement.Phase.target",
+  "author": "woshuajolk",
+  "expect": "green",
+  "note": "Submitted through the Jig API as artifact 45c4977e-a21c-46a2-9fff-db50adcb1954."
+}
